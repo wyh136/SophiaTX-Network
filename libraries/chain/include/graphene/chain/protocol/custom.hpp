@@ -27,7 +27,8 @@
 #include <graphene/chain/protocol/base.hpp>
 #include <fc/io/json.hpp>
 
-namespace graphene { namespace chain { 
+namespace graphene { namespace chain {
+
    struct message_payload {
       account_id_type from;
       account_id_type to;
@@ -41,9 +42,26 @@ namespace graphene { namespace chain {
       void set_message(const fc::ecc::private_key& priv, const fc::ecc::public_key& pub,
          const string& msg, uint64_t custom_nonce);
 
-      static void get_message(const fc::ecc::private_key& priv,
-         const fc::ecc::public_key& pub, const std::vector<char>& data, std::string& text, uint64_t nonce);
+      static void get_message(const fc::ecc::private_key& priv, const fc::ecc::public_key& pub,
+                              const std::vector<char>& data, std::string& text, uint64_t nonce);
    };
+
+   struct stx_invoice_payload {
+      uint32_t transaction_id;
+      account_id_type from;
+      account_id_type to;
+
+      std::vector<char> data;
+      public_key_type pub_from;
+      public_key_type pub_to;
+      uint64_t nonce = 0;
+
+      void set_message(const fc::ecc::private_key& priv, const fc::ecc::public_key& pub, const string& msg );
+
+      static void get_message(const fc::ecc::private_key& priv, const fc::ecc::public_key& pub,
+                              const std::vector<char>& data, std::string& text, uint64_t nonce);
+   };
+
    enum custom_operation_subtype : int;
    /**
     * @brief provides a generic way to add higher level protocols on top of miner consensus
@@ -83,11 +101,28 @@ namespace graphene { namespace chain {
          std::string s = fc::json::to_string(tmp);
          data = std::vector<char>(s.begin(), s.end());
       }
+
+      void get_stx_invoice_payload(stx_invoice_payload& stx_invoice_pl) const
+      {
+         FC_ASSERT(data.size());
+         variant tmp = fc::json::from_string(&data[0]);
+         fc::from_variant(tmp, stx_invoice_pl);
+      }
+
+      void set_stx_invoice_payload(const stx_invoice_payload& stx_invoice_pl)
+      {
+         variant tmp;
+         fc::to_variant(stx_invoice_pl, tmp);
+         std::string s = fc::json::to_string(tmp);
+         data = std::vector<char>(s.begin(), s.end());
+      }
+
    };
 
    
 } } // namespace graphene::chain
 
 FC_REFLECT( graphene::chain::message_payload, (from)(to)(subtype)(data)(pub_from)(pub_to)(nonce) )
+FC_REFLECT( graphene::chain::stx_invoice_payload, (transaction_id)(from)(to)(data)(pub_from)(pub_to)(nonce) )
 FC_REFLECT( graphene::chain::custom_operation::fee_parameters_type, (fee)(price_per_kbyte) )
 FC_REFLECT( graphene::chain::custom_operation, (fee)(payer)(required_auths)(id)(data) )

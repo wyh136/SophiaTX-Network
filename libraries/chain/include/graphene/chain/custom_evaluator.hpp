@@ -38,6 +38,7 @@ namespace graphene { namespace chain {
    {
       custom_operation_subtype_undefined = 0,
       custom_operation_subtype_messaging,
+      custom_operation_subtype_stx_invoice,
       custom_operation_subtype_max,
    };
 

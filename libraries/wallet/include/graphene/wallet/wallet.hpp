@@ -2028,6 +2028,41 @@ namespace graphene { namespace wallet {
          * @return vector of message objects
          */
          vector<text_message> get_messages(const std::string& receiver, uint32_t max_count) const;
+
+         /**
+          * @brief Sends an invoice to receiver.
+          * @param from The name or ID of the account sending the invoice
+          * @param to The name or ID of the account receiving the invoice
+          * @param tx_id The identifier of the invoice
+          * @param data The data will be encrypted in the transaction and readable for the sender and the receiver
+          * @param broadcast True if you wish to broadcast the transaction
+          * @return The signed transaction sending the invoice
+          */
+         signed_transaction send_stx_invoice(const string& from,
+                                             const string& to,
+                                             uint64_t transaction_id,
+                                             const string& data,
+                                             bool broadcast)const;
+
+         /**
+          * @brief Decodes data from custom operation
+          * @param data Encoded data from custom operation
+          * @return Readable data structure
+          */
+         stx_invoice_payload get_stx_invoice_data( const vector<char>& data ) const;
+
+         /**
+          * @brief Encrypts data
+          * @param data Encrypted data
+          * @param wif_priv_key Sender's/receiver's private key
+          * @param pub_key Receiver's/sender's public key
+          * @param nonce Random number used to generate shared secret. Can be obtained from the existing stx_invoice_payload
+          * @return Decrypted data
+          */
+         string extract_stx_invoice_data(const vector<char>& data,
+                                         const string& wif_priv_key,
+                                         const public_key_type& pub_key,
+                                         uint64_t nonce) const;
       };
 
    } }
@@ -2241,4 +2276,7 @@ FC_API( graphene::wallet::wallet_api,
            (send_message)
            (get_message_objects)
            (get_messages)
+           (send_stx_invoice)
+           (get_stx_invoice_data)
+           (extract_stx_invoice_data)
 )

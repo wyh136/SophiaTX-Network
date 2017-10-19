@@ -24,6 +24,7 @@
 #include <graphene/chain/protocol/custom.hpp>
 #include <graphene/chain/protocol/memo.hpp>
 #include <fc/crypto/aes.hpp>
+#include <graphene/chain/custom_evaluator.hpp>
 
 namespace graphene { namespace chain {
 
@@ -33,7 +34,10 @@ void custom_operation::validate()const
 }
 share_type custom_operation::calculate_fee(const fee_parameters_type& k)const
 {
-   return k.fee + calculate_data_fee( fc::raw::pack_size(*this), k.price_per_kbyte );
+   if( id == custom_operation_subtype::custom_operation_subtype_stx_invoice )
+      return k.fee;
+   else
+      return k.fee + calculate_data_fee( fc::raw::pack_size(*this), k.price_per_kbyte );
 }
 
 void message_payload::set_message(const fc::ecc::private_key& priv, const fc::ecc::public_key& pub,
@@ -78,6 +82,32 @@ void message_payload::get_message(const fc::ecc::private_key& priv,
    }
    
    return;
+}
+
+void stx_invoice_payload::set_message(const fc::ecc::private_key& priv, const fc::ecc::public_key& pub, const string& msg )
+{
+   pub_from = priv.get_public_key();
+   pub_to = pub;
+   uint64_t entropy = fc::sha224::hash(fc::ecc::private_key::generate())._hash[0];
+   entropy <<= 32;
+   entropy                                                     &= 0xff00000000000000;
+   nonce = (fc::time_point::now().time_since_epoch().count()   &  0x00ffffffffffffff) | entropy;
+   auto secret = priv.get_shared_secret(pub);
+   auto nonce_plus_secret = fc::sha512::hash(fc::to_string(nonce) + secret.str());
+   string text = memo_message(digest_type::hash(msg)._hash[0], msg).serialize();
+   data = fc::aes_encrypt( nonce_plus_secret, vector<char>(text.begin(), text.end()) );
+}
+
+void stx_invoice_payload::get_message(const fc::ecc::private_key& priv, const fc::ecc::public_key& pub,
+                                      const std::vector<char>& data, std::string& text, uint64_t nonce)
+{
+   auto secret = priv.get_shared_secret(pub);
+
+   auto nonce_plus_secret = fc::sha512::hash(fc::to_string(nonce) + secret.str());
+   auto plain_text = fc::aes_decrypt( nonce_plus_secret, data );
+   auto result = memo_message::deserialize(string(plain_text.begin(), plain_text.end()));
+   FC_ASSERT( result.checksum == uint32_t(digest_type::hash(result.text)._hash[0]) );
+   text = result.text;
 }
 
 } }
