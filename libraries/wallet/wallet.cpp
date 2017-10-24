@@ -2947,33 +2947,19 @@ signed_transaction content_cancellation(string author,
       return _remote_db->head_block_time();
    }
 
-   signed_transaction send_stx_invoice(const string& from, const string& to, uint64_t transaction_id, const string& data, bool broadcast)
+   signed_transaction send_trans(const stx_payload& stx_pl)
    {
       try {
          FC_ASSERT(!is_locked());
 
-         account_object from_account = get_account(from);
-         account_object to_account = get_account(to);
-         account_id_type from_id = get_account_id(from);
-         account_id_type to_id = get_account_id(to);
+         auto itr = std::find(stx_send_method_type.begin(),stx_send_method_type.end(),stx_pl.MethodType);
+         FC_ASSERT(itr != stx_send_method_type.end());
 
          custom_operation cust_op;
-         stx_invoice_payload pl;
 
          cust_op.id = graphene::chain::custom_operation_subtype_stx_invoice;
-         cust_op.payer = from_id;
-
-         pl.from = from_id;
-         pl.to = to_id;
-         pl.transaction_id = transaction_id;
-         pl.pub_from = from_account.options.memo_key;
-         pl.pub_to = to_account.options.memo_key;
-
-         FC_ASSERT(data.size());
-         pl.data = std::vector<char>(data.begin(), data.end());
-         pl.set_message(get_private_key(from_account.options.memo_key), to_account.options.memo_key, data);
-
-         cust_op.set_stx_invoice_payload(pl);
+         cust_op.payer = stx_pl.Sender;
+         cust_op.set_stx_payload(stx_pl);
 
          signed_transaction tx;
          tx.operations.push_back(cust_op);
@@ -2981,9 +2967,32 @@ signed_transaction content_cancellation(string author,
          set_operation_fees(tx, _remote_db->get_global_properties().parameters.current_fees);
          tx.validate();
 
-         return sign_transaction(tx, broadcast);
+         return sign_transaction(tx, true);
 
-      } FC_CAPTURE_AND_RETHROW((from)(to)(transaction_id)(data)(broadcast))
+      } FC_CAPTURE_AND_RETHROW((stx_pl))
+   }
+
+   vector<stx_object> recv_trans(const stx_payload& stx_pl)
+   {
+      auto itr = std::find(stx_recv_method_type.begin(),stx_recv_method_type.end(),stx_pl.MethodType);
+      FC_ASSERT(itr != stx_recv_method_type.end());
+
+      if( stx_pl.MethodType == stx_recv_method_type[0] )
+         return _remote_db->get_stx_data_by_sender(stx_pl.Sender, 100);
+      else if( stx_pl.MethodType == stx_recv_method_type[1] )
+         return _remote_db->get_stx_data_by_receiver(stx_pl.Receiver, 100);
+      else if( stx_pl.MethodType == stx_recv_method_type[3] )
+      {
+         optional<stx_object> obj = _remote_db->get_stx_data_by_transaction_id(stx_pl.TransId);
+         vector<stx_object> result;
+         if( obj.valid() )
+            result.push_back(*obj);
+         return result;
+      }
+      /*else if( stx_pl.MethodType == stx_recv_method_type[2] )
+         return _remote_db->get_stx_data_by_sender_method(stx_pl.Sender, stx_pl.MethodType, 100);
+      else if( stx_pl.MethodType == stx_recv_method_type[3] )
+         return _remote_db->get_stx_data_by_receiver_method(stx_pl.Receiver, stx_pl.MethodType, 100);*/
    }
 
    string                  _wallet_filename;
@@ -4841,29 +4850,14 @@ void graphene::wallet::detail::submit_transfer_listener::package_seed_complete()
       return my->get_messages(receiver, max_count);
    }
 
-   signed_transaction wallet_api::send_stx_invoice(const string& from, const string& to, uint64_t transaction_id, const string& data, bool broadcast) const
+   signed_transaction wallet_api::send_trans(const stx_payload& stx_pl) const
    {
-      return my->send_stx_invoice(from, to, transaction_id, data, broadcast);
+      return my->send_trans(stx_pl);
    }
 
-   stx_invoice_payload wallet_api::get_stx_invoice_data( const vector<char>& data ) const
+   vector<stx_object> wallet_api::recv_trans(const stx_payload& stx_pl) const
    {
-      stx_invoice_payload stx_invoice_pl;
-      FC_ASSERT(data.size());
-      variant tmp = fc::json::from_string(&data[0]);
-      fc::from_variant(tmp, stx_invoice_pl);
-      return stx_invoice_pl;
-   }
-
-   string wallet_api::extract_stx_invoice_data(const vector<char>& data, const string& wif_priv_key, const public_key_type& pub_key, uint64_t nonce) const
-   {
-      string result;
-      fc::optional<fc::ecc::private_key> optional_private_key = wif_to_key(wif_priv_key);
-      if (!optional_private_key)
-         FC_THROW("Invalid private key");
-
-      stx_invoice_payload::get_message( *optional_private_key, pub_key, data, result, nonce);
-      return result;
+      return my->recv_trans(stx_pl);
    }
 
 } } // graphene::wallet

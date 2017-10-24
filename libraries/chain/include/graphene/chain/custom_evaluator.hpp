@@ -62,4 +62,7 @@ namespace graphene { namespace chain {
    private:
       static std::map<custom_operation_subtype, custom_operation_interpreter*> operation_subtypes;
    };
+
+
+
 } }

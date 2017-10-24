@@ -1,6 +1,7 @@
 #include <graphene/chain/custom_evaluator.hpp>
-
+#include <graphene/chain/stx_object.hpp>
 #include <iostream>
+#include <graphene/chain/database.hpp>
 
 namespace graphene { namespace chain {
 
@@ -58,5 +59,7 @@ void custom_evaluator::unregister_callback(custom_operation_subtype s)
    // lockit
    operation_subtypes.erase(s);
 }
+
+
 
 } } // graphene::chain

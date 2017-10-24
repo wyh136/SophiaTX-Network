@@ -29,6 +29,8 @@
 #include <graphene/account_history/account_history_plugin.hpp>
 #include <graphene/messaging/messaging.hpp>
 #include <graphene/utilities/dirhelper.hpp>
+#include <graphene/chain/custom_evaluator.hpp>
+#include <graphene/chain/stx_evaluator.hpp>
 
 #include <fc/exception/exception.hpp>
 #include <fc/thread/thread.hpp>
@@ -115,6 +117,8 @@ int main(int argc, char** argv) {
    SetConsoleCtrlHandler(HandlerRoutine, TRUE);
 #endif
    app::application* node = new app::application();
+   graphene::chain::stx_evaluation* stx_eval = new graphene::chain::stx_evaluation();
+   stx_eval->_chain_db = node->chain_database();
    fc::oexception unhandled_exception;
    try {
       bpo::options_description app_options("DECENT Daemon");
@@ -217,6 +221,8 @@ int main(int argc, char** argv) {
       node->initialize(data_dir, options);
       node->initialize_plugins( options );
 
+      graphene::chain::custom_evaluator::register_callback(graphene::chain::custom_operation_subtype_stx_invoice, dynamic_cast<graphene::chain::custom_operation_interpreter*>(stx_eval));
+
       node->startup();
       node->startup_plugins();
 
@@ -267,6 +273,8 @@ int main(int argc, char** argv) {
       node->shutdown_plugins();
       node->shutdown();
       delete node;
+      delete stx_eval;
+
 #ifdef _MSC_VER
       s_bStop = TRUE;
 #endif
@@ -283,6 +291,7 @@ int main(int argc, char** argv) {
       elog("Exiting with error:\n${e}", ("e", unhandled_exception->to_detail_string()));
       node->shutdown();
       delete node;
+      delete stx_eval;
       return 1;
    }
 }

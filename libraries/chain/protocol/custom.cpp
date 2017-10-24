@@ -84,30 +84,5 @@ void message_payload::get_message(const fc::ecc::private_key& priv,
    return;
 }
 
-void stx_invoice_payload::set_message(const fc::ecc::private_key& priv, const fc::ecc::public_key& pub, const string& msg )
-{
-   pub_from = priv.get_public_key();
-   pub_to = pub;
-   uint64_t entropy = fc::sha224::hash(fc::ecc::private_key::generate())._hash[0];
-   entropy <<= 32;
-   entropy                                                     &= 0xff00000000000000;
-   nonce = (fc::time_point::now().time_since_epoch().count()   &  0x00ffffffffffffff) | entropy;
-   auto secret = priv.get_shared_secret(pub);
-   auto nonce_plus_secret = fc::sha512::hash(fc::to_string(nonce) + secret.str());
-   string text = memo_message(digest_type::hash(msg)._hash[0], msg).serialize();
-   data = fc::aes_encrypt( nonce_plus_secret, vector<char>(text.begin(), text.end()) );
-}
-
-void stx_invoice_payload::get_message(const fc::ecc::private_key& priv, const fc::ecc::public_key& pub,
-                                      const std::vector<char>& data, std::string& text, uint64_t nonce)
-{
-   auto secret = priv.get_shared_secret(pub);
-
-   auto nonce_plus_secret = fc::sha512::hash(fc::to_string(nonce) + secret.str());
-   auto plain_text = fc::aes_decrypt( nonce_plus_secret, data );
-   auto result = memo_message::deserialize(string(plain_text.begin(), plain_text.end()));
-   FC_ASSERT( result.checksum == uint32_t(digest_type::hash(result.text)._hash[0]) );
-   text = result.text;
-}
 
 } }

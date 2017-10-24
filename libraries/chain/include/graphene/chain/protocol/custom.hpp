@@ -46,20 +46,26 @@ namespace graphene { namespace chain {
                               const std::vector<char>& data, std::string& text, uint64_t nonce);
    };
 
-   struct stx_invoice_payload {
-      uint32_t transaction_id;
-      account_id_type from;
-      account_id_type to;
+   const vector<string> stx_send_method_type = {"send_invoice",
+                                                "order_submission",
+                                                "project_approve"};
 
-      std::vector<char> data;
-      public_key_type pub_from;
-      public_key_type pub_to;
-      uint64_t nonce = 0;
+   const vector<string> stx_recv_method_type = {"recv_invoices_by_sender",
+                                                "recv_invoices_by_receiver",
+                                                "recv_invoice_by_id"};
 
-      void set_message(const fc::ecc::private_key& priv, const fc::ecc::public_key& pub, const string& msg );
+   struct stx_payload {
+      string MethodType;
+      uint64_t TransId;
+      account_id_type Sender;
+      account_id_type Receiver;
 
-      static void get_message(const fc::ecc::private_key& priv, const fc::ecc::public_key& pub,
-                              const std::vector<char>& data, std::string& text, uint64_t nonce);
+      string Data;
+      //public_key_type pub_from;
+      //public_key_type pub_to;
+      //uint64_t nonce = 0;
+
+      //string Class;
    };
 
    enum custom_operation_subtype : int;
@@ -102,27 +108,28 @@ namespace graphene { namespace chain {
          data = std::vector<char>(s.begin(), s.end());
       }
 
-      void get_stx_invoice_payload(stx_invoice_payload& stx_invoice_pl) const
+      void get_stx_payload(stx_payload& stx_pl) const
       {
          FC_ASSERT(data.size());
          variant tmp = fc::json::from_string(&data[0]);
-         fc::from_variant(tmp, stx_invoice_pl);
+         fc::from_variant(tmp, stx_pl);
       }
 
-      void set_stx_invoice_payload(const stx_invoice_payload& stx_invoice_pl)
+      void set_stx_payload(const stx_payload& stx_pl)
       {
          variant tmp;
-         fc::to_variant(stx_invoice_pl, tmp);
+         fc::to_variant(stx_pl, tmp);
          std::string s = fc::json::to_string(tmp);
          data = std::vector<char>(s.begin(), s.end());
       }
 
    };
 
+     
    
 } } // namespace graphene::chain
 
 FC_REFLECT( graphene::chain::message_payload, (from)(to)(subtype)(data)(pub_from)(pub_to)(nonce) )
-FC_REFLECT( graphene::chain::stx_invoice_payload, (transaction_id)(from)(to)(data)(pub_from)(pub_to)(nonce) )
+FC_REFLECT( graphene::chain::stx_payload, (MethodType)(TransId)(Sender)(Receiver)(Data) )
 FC_REFLECT( graphene::chain::custom_operation::fee_parameters_type, (fee)(price_per_kbyte) )
 FC_REFLECT( graphene::chain::custom_operation, (fee)(payer)(required_auths)(id)(data) )

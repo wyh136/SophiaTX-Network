@@ -79,12 +79,13 @@ add_library( graphene_chain
              proposal_object.cpp
              vesting_balance_object.cpp
              transaction_detail_object.cpp
+             stx_evaluator.cpp
 
              block_database.cpp
 
              ${HEADERS}
              "${CMAKE_CURRENT_BINARY_DIR}/include/graphene/chain/hardfork.hpp"
-           )
+)
 
 add_dependencies( graphene_chain build_hardfork_hpp )
 if( WIN32 )

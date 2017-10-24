@@ -42,6 +42,7 @@
 #include <graphene/chain/budget_record_object.hpp>
 #include <graphene/chain/subscription_object.hpp>
 #include <graphene/chain/transaction_detail_object.hpp>
+#include <graphene/chain/stx_object.hpp>
 
 #include <fc/api.hpp>
 #include <fc/optional.hpp>
@@ -788,6 +789,12 @@ namespace graphene { namespace app {
          miner_reward_input get_time_to_maint_by_block_time(fc::time_point_sec block_time) const;
 
          vector<database::votes_gained> get_actual_votes() const;
+
+         vector<stx_object> get_stx_data_by_sender(account_id_type account, uint32_t count)const;
+         vector<stx_object> get_stx_data_by_receiver(account_id_type account, uint32_t count)const;
+         optional<stx_object> get_stx_data_by_transaction_id(uint64_t id)const;
+         /*vector<stx_object> get_stx_data_by_sender_method(account_id_type account, string method, uint32_t count)const;
+         vector<stx_object> get_stx_data_by_receiver_method(account_id_type account, string method, uint32_t count)const;*/
       private:
          std::shared_ptr< database_api_impl > my;
       };
@@ -900,4 +907,11 @@ FC_API(graphene::app::database_api,
           (list_active_subscriptions_by_author)
           (list_subscriptions_by_author)
           (get_actual_votes)
+
+          // STX
+          (get_stx_data_by_sender)
+          (get_stx_data_by_receiver)
+          /*(get_stx_data_by_sender_method)
+          (get_stx_data_by_receiver_method)*/
+          (get_stx_data_by_transaction_id)
 )

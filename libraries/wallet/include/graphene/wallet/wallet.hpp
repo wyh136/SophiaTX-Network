@@ -240,10 +240,10 @@ namespace graphene { namespace wallet {
  *
  * @defgroup WalletCLI WalletCLI
  */
-      class wallet_api
-      {
+      class wallet_api {
       public:
-         wallet_api( const wallet_data& initial_data, fc::api<login_api> rapi );
+         wallet_api(const wallet_data &initial_data, fc::api<login_api> rapi);
+
          virtual ~wallet_api();
 
          /**
@@ -252,7 +252,7 @@ namespace graphene { namespace wallet {
           * @return true if the wallet is copied, false otherwise
           * @ingroup WalletCLI
           */
-         bool copy_wallet_file( string destination_filename );
+         bool copy_wallet_file(string destination_filename);
 
          /**
           * @brief Derive private key from given prefix and sequence
@@ -261,21 +261,21 @@ namespace graphene { namespace wallet {
           * @return private_key Derived private key
           * @ingroup WalletCLI
           */
-         fc::ecc::private_key derive_private_key(const std::string& prefix_string, int sequence_number) const;
+         fc::ecc::private_key derive_private_key(const std::string &prefix_string, int sequence_number) const;
 
          /**
           * @brief Lists all available commands
           * @return List of all available commands
           * @ingroup WalletCLI
           */
-         variant                           info();
+         variant info();
 
          /**
           * @brief Returns info such as client version, git version of graphene/fc, version of boost, openssl.
           * @returns compile time info and client and dependencies versions
           * @ingroup WalletCLI
           */
-         variant_object                    about() const;
+         variant_object about() const;
 
          /**
           * @brief Retrieve a full, signed block with info
@@ -283,14 +283,14 @@ namespace graphene { namespace wallet {
           * @return the referenced block with info, or null if no matching block was found
           * @ingroup WalletCLI
           */
-         optional<signed_block_with_info>    get_block( uint32_t num );
+         optional<signed_block_with_info> get_block(uint32_t num);
 
          /**
           * @brief Returns the number of accounts registered on the blockchain
           * @returns the number of registered accounts
           * @ingroup WalletCLI
           */
-         uint64_t                          get_account_count()const;
+         uint64_t get_account_count() const;
 
          /**
           * @brief Lists all accounts controlled by this wallet.
@@ -299,7 +299,7 @@ namespace graphene { namespace wallet {
           * @returns a list of account objects
           * @ingroup WalletCLI
           */
-         vector<account_object>            list_my_accounts();
+         vector<account_object> list_my_accounts();
 
          /**
           * @brief Lists all accounts registered in the blockchain.
@@ -315,7 +315,7 @@ namespace graphene { namespace wallet {
           * @returns a list of accounts mapping account names to account ids
           * @ingroup WalletCLI
           */
-         map<string,account_id_type>       list_accounts(const string& lowerbound, uint32_t limit);
+         map<string, account_id_type> list_accounts(const string &lowerbound, uint32_t limit);
 
          /**
           * @brief Get names and IDs for registered accounts that match search term
@@ -326,7 +326,8 @@ namespace graphene { namespace wallet {
           * @return Map of account names to corresponding IDs
           * @ingroup WalletCLI
           */
-         vector<account_object>       search_accounts(const string& term, const string& order, const string& id, uint32_t limit);
+         vector<account_object>
+         search_accounts(const string &term, const string &order, const string &id, uint32_t limit);
 
          /**
           * @brief List the balances of an account.
@@ -337,7 +338,7 @@ namespace graphene { namespace wallet {
           * @returns a list of the given account's balances
           * @ingroup WalletCLI
           */
-         vector<asset>                     list_account_balances(const string& id);
+         vector<asset> list_account_balances(const string &id);
 
          /**
           * @brief Lists all assets registered on the blockchain.
@@ -350,7 +351,7 @@ namespace graphene { namespace wallet {
           * @returns the list of asset objects, ordered by symbol
           * @ingroup WalletCLI
           */
-         vector<asset_object>              list_assets(const string& lowerbound, uint32_t limit)const;
+         vector<asset_object> list_assets(const string &lowerbound, uint32_t limit) const;
 
          /**
           * @brief Returns the operations on the named account.
@@ -364,9 +365,9 @@ namespace graphene { namespace wallet {
           * @returns a list of \c transaction_detail_object
           * @ingroup WalletCLI
           */
-         vector<class transaction_detail_object> search_account_history(string const& account_name,
-                                                                        string const& order,
-                                                                        string const& id,
+         vector<class transaction_detail_object> search_account_history(string const &account_name,
+                                                                        string const &order,
+                                                                        string const &id,
                                                                         int limit) const;
 
 
@@ -380,7 +381,7 @@ namespace graphene { namespace wallet {
           * @param limit the number of entries to return (starting from the most recent) (max 100)
           * @returns a list of \c operation_history_objects
           */
-         vector<operation_detail>  get_account_history(string name, int limit)const;
+         vector<operation_detail> get_account_history(string name, int limit) const;
 
 
          /**
@@ -392,7 +393,7 @@ namespace graphene { namespace wallet {
           * @returns the global properties
           * @ingroup WalletCLI
           */
-         global_property_object            get_global_properties() const;
+         global_property_object get_global_properties() const;
 
          /**
           * @brief Returns the block chain's rapidly-changing properties.
@@ -402,7 +403,7 @@ namespace graphene { namespace wallet {
           * @returns the dynamic global properties
           * @ingroup WalletCLI
           */
-         dynamic_global_property_object    get_dynamic_global_properties() const;
+         dynamic_global_property_object get_dynamic_global_properties() const;
 
          /**
           * @brief Returns information about the given account.
@@ -411,7 +412,7 @@ namespace graphene { namespace wallet {
           * @returns the public account data stored in the blockchain
           * @ingroup WalletCLI
           */
-         account_object                    get_account(string account_name_or_id) const;
+         account_object get_account(string account_name_or_id) const;
 
          /**
           * @brief Returns information about the given asset.
@@ -419,7 +420,7 @@ namespace graphene { namespace wallet {
           * @returns the information about the asset stored in the block chain
           * @ingroup WalletCLI
           */
-         asset_object                      get_asset(string asset_name_or_id) const;
+         asset_object get_asset(string asset_name_or_id) const;
 
          /**
           * @brief Returns the BitAsset-specific data for a given asset.
@@ -429,7 +430,7 @@ namespace graphene { namespace wallet {
           * @returns the BitAsset-specific data for this asset
           * @ingroup WalletCLI
           */
-         monitored_asset_options        get_monitored_asset_data(string asset_name_or_id)const;
+         monitored_asset_options get_monitored_asset_data(string asset_name_or_id) const;
 
          /**
           * @brief Lookup the id of a named account.
@@ -437,7 +438,7 @@ namespace graphene { namespace wallet {
           * @returns the id of the named account
           * @ingroup WalletCLI
           */
-         account_id_type                   get_account_id(string account_name_or_id) const;
+         account_id_type get_account_id(string account_name_or_id) const;
 
          /**
           * @brief Lookup the id of a named asset.
@@ -445,7 +446,7 @@ namespace graphene { namespace wallet {
           * @returns the id of the given asset
           * @ingroup WalletCLI
           */
-         asset_id_type                     get_asset_id(string asset_name_or_id) const;
+         asset_id_type get_asset_id(string asset_name_or_id) const;
 
          /**
           * @brief Returns the blockchain object corresponding to the given id.
@@ -459,7 +460,7 @@ namespace graphene { namespace wallet {
           * @returns the requested object
           * @ingroup WalletCLI
           */
-         variant                           get_object(object_id_type id) const;
+         variant get_object(object_id_type id) const;
 
          /** @brief Returns the current wallet filename.
           *
@@ -469,7 +470,7 @@ namespace graphene { namespace wallet {
           * @return the wallet filename
           * @ingroup WalletCLI
           */
-         string                            get_wallet_filename() const;
+         string get_wallet_filename() const;
 
          /**
           * @brief Get the WIF private key corresponding to a public key.  The
@@ -478,7 +479,7 @@ namespace graphene { namespace wallet {
           * @return WIF private key corresponding to a public key
           * @ingroup WalletCLI
           */
-         string                            get_private_key( public_key_type pubkey )const;
+         string get_private_key(public_key_type pubkey) const;
 
          /**
           * @ingroup Transaction Builder API
@@ -493,7 +494,7 @@ namespace graphene { namespace wallet {
           * @ingroup Transaction Builder API
           * @ingroup WalletCLI
           */
-         void add_operation_to_builder_transaction(transaction_handle_type transaction_handle, const operation& op);
+         void add_operation_to_builder_transaction(transaction_handle_type transaction_handle, const operation &op);
 
          /**
           *
@@ -505,7 +506,8 @@ namespace graphene { namespace wallet {
           */
          void replace_operation_in_builder_transaction(transaction_handle_type handle,
                                                        unsigned operation_index,
-                                                       const operation& new_op);
+                                                       const operation &new_op);
+
          /**
           *
           * @param handle
@@ -579,7 +581,7 @@ namespace graphene { namespace wallet {
          /**
           * Get list of proposed transactions
           */
-         vector<proposal_object> get_proposed_transactions( string account_or_id )const;
+         vector<proposal_object> get_proposed_transactions(string account_or_id) const;
 
          /**
           * @brief Checks whether the wallet has just been created and has not yet had a password set.
@@ -589,7 +591,7 @@ namespace graphene { namespace wallet {
           * @ingroup Wallet Management
           * @ingroup WalletCLI
           */
-         bool    is_new()const;
+         bool is_new() const;
 
          /**
           * @brief Checks whether the wallet is locked (is unable to use its private keys).
@@ -599,14 +601,14 @@ namespace graphene { namespace wallet {
           * @ingroup Wallet Management
           * @ingroup WalletCLI
           */
-         bool    is_locked()const;
+         bool is_locked() const;
 
          /**
           * @brief Locks the wallet immediately.
           * @ingroup Wallet Management
           * @ingroup WalletCLI
           */
-         void    lock();
+         void lock();
 
          /**
           * @brief Unlocks the wallet.
@@ -617,7 +619,7 @@ namespace graphene { namespace wallet {
           * @ingroup Wallet Management
           * @ingroup WalletCLI
           */
-         void    unlock(string password);
+         void unlock(string password);
 
          /**
           * @brief Sets a new password on the wallet.
@@ -628,7 +630,7 @@ namespace graphene { namespace wallet {
           * @ingroup Wallet Management
           * @ingroup WalletCLI
           */
-         void    set_password(string password);
+         void set_password(string password);
 
          /**
           * @brief Dumps all private keys owned by the wallet.
@@ -649,7 +651,7 @@ namespace graphene { namespace wallet {
           * @returns a multi-line string suitable for displaying on a terminal
           * @ingroup WalletCLI
           */
-         string  help()const;
+         string help() const;
 
          /**
           * @brief Returns detailed help on a single API command.
@@ -657,7 +659,7 @@ namespace graphene { namespace wallet {
           * @returns a multi-line string suitable for displaying on a terminal
           * @ingroup WalletCLI
           */
-         string  gethelp(const string& method)const;
+         string gethelp(const string &method) const;
 
          /**
           * @brief Loads a specified Graphene wallet.
@@ -674,7 +676,7 @@ namespace graphene { namespace wallet {
           * @returns true if the specified wallet is loaded
           * @ingroup WalletCLI
           */
-         bool    load_wallet_file(string wallet_filename = "");
+         bool load_wallet_file(string wallet_filename = "");
 
          /**
           * @brief Saves the current wallet to the given filename.
@@ -688,7 +690,7 @@ namespace graphene { namespace wallet {
           *                        save to the current filename.
           * @ingroup WalletCLI
           */
-         void    save_wallet_file(string wallet_filename = "");
+         void save_wallet_file(string wallet_filename = "");
 
          /**
           * @brief Sets the wallet filename used for future writes.
@@ -699,7 +701,7 @@ namespace graphene { namespace wallet {
           * @param wallet_filename the new filename to use for future saves
           * @ingroup WalletCLI
           */
-         void    set_wallet_filename(string wallet_filename);
+         void set_wallet_filename(string wallet_filename);
 
          /**
           * @brief Suggests a safe brain key to use for creating your account.
@@ -710,7 +712,7 @@ namespace graphene { namespace wallet {
           * @returns a suggested brain_key
           * @ingroup WalletCLI
           */
-         brain_key_info suggest_brain_key()const;
+         brain_key_info suggest_brain_key() const;
 
          /**
           * @brief Suggests a safe brain key to use for creating your account also 
@@ -730,7 +732,7 @@ namespace graphene { namespace wallet {
           * @returns the corresponding brain_key_info
           * @ingroup WalletCLI
           */
-         brain_key_info get_brain_key_info(string const& brain_key) const;
+         brain_key_info get_brain_key_info(string const &brain_key) const;
 
          /**
           * @brief Converts a signed_transaction in JSON form to its binary representation.
@@ -767,7 +769,7 @@ namespace graphene { namespace wallet {
           * @return mapped account names to boolean values indicating whether the account was successfully imported
           * @ingroup WalletCLI
           */
-         map<string, bool> import_accounts( string filename, string password );
+         map<string, bool> import_accounts(string filename, string password);
 
          /**
           * @brief Imports account keys from particular account from another wallet file to desired account located in wallet file currently used
@@ -778,7 +780,7 @@ namespace graphene { namespace wallet {
           * @return true if the keys were imported
           * @ingroup WalletCLI
           */
-         bool import_account_keys( string filename, string password, string src_account_name, string dest_account_name );
+         bool import_account_keys(string filename, string password, string src_account_name, string dest_account_name);
 
          /**
           * @brief Transforms a brain key to reduce the chance of errors when re-entering the key from memory.
@@ -815,7 +817,7 @@ namespace graphene { namespace wallet {
          signed_transaction register_account(string name,
                                              public_key_type owner,
                                              public_key_type active,
-                                             string  registrar_account,
+                                             string registrar_account,
                                              bool broadcast = false);
 
          /**
@@ -839,6 +841,7 @@ namespace graphene { namespace wallet {
                                                           string account_name,
                                                           string registrar_account,
                                                           bool broadcast = false);
+
          /**
           * @brief Creates a new account and registers it on the blockchain, but does not import the key to wallet.
           *
@@ -892,31 +895,31 @@ namespace graphene { namespace wallet {
           *             increase with transaction size
           *  @ingroup WalletCLI
           */
-         pair<transaction_id_type,signed_transaction> transfer2(string from,
-                                                                string to,
-                                                                string amount,
-                                                                string asset_symbol,
-                                                                string memo ) {
-            auto trx = transfer( from, to, amount, asset_symbol, memo, true );
-            return std::make_pair(trx.id(),trx);
+         pair<transaction_id_type, signed_transaction> transfer2(string from,
+                                                                 string to,
+                                                                 string amount,
+                                                                 string asset_symbol,
+                                                                 string memo) {
+            auto trx = transfer(from, to, amount, asset_symbol, memo, true);
+            return std::make_pair(trx.id(), trx);
          }
 
-        /**
-         * @brief Encapsulates begin_builder_transaction(), add_operation_to_builder_transaction(),
-         * propose_builder_transaction2(), set_fees_on_builder_transaction() functions for transfer operation
-         *
-         * @param proposer Proposer
-         * @param from the name or id of the account sending the funds
-         * @param to the name or id of the account receiving the funds
-         * @param amount the amount to send (in nominal units -- to send half of a BTS, specify 0.5)
-         * @param asset_symbol the symbol or id of the asset to send
-         * @param memo a memo to attach to the transaction.  The memo will be encrypted in the
-         *             transaction and readable for the receiver.  There is no length limit
-         *             other than the limit imposed by maximum transaction size, but transaction
-         *             increase with transaction size
-         * @param expiration expiration time
-         * @ingroup WalletCLI
-         */
+         /**
+          * @brief Encapsulates begin_builder_transaction(), add_operation_to_builder_transaction(),
+          * propose_builder_transaction2(), set_fees_on_builder_transaction() functions for transfer operation
+          *
+          * @param proposer Proposer
+          * @param from the name or id of the account sending the funds
+          * @param to the name or id of the account receiving the funds
+          * @param amount the amount to send (in nominal units -- to send half of a BTS, specify 0.5)
+          * @param asset_symbol the symbol or id of the asset to send
+          * @param memo a memo to attach to the transaction.  The memo will be encrypted in the
+          *             transaction and readable for the receiver.  There is no length limit
+          *             other than the limit imposed by maximum transaction size, but transaction
+          *             increase with transaction size
+          * @param expiration expiration time
+          * @ingroup WalletCLI
+          */
          void propose_transfer(string proposer,
                                string from,
                                string to,
@@ -925,186 +928,185 @@ namespace graphene { namespace wallet {
                                string memo,
                                time_point_sec expiration
          );
-         
+
          /**
           * @brief This method is used to convert a JSON transaction to its transaction ID.
           * @param trx Signed transaction
           * @return
           * @ingroup WalletCLI
           */
-         transaction_id_type get_transaction_id( const signed_transaction& trx )const { return trx.id(); }
+         transaction_id_type get_transaction_id(const signed_transaction &trx) const { return trx.id(); }
 
 
+         /**
+          * @brief Creates a new monitored asset.
+          *
+          * Options can be changed later using \c update_monitored_asset()
+          *
+          * @param issuer the name or id of the account who will pay the fee and become the
+          *               issuer of the new asset.  This can be updated later
+          * @param symbol the ticker symbol of the new asset
+          * @param precision the number of digits of precision to the right of the decimal point,
+          *                  must be less than or equal to 12
+          * @param description asset description. Maximal length is 1000 chars.
+          * @param feed_lifetime_sec time before a price feed expires
+          * @param minimum_feeds minimum number of unexpired feeds required to extract a median feed from
+          * @param broadcast true to broadcast the transaction on the network
+          * @returns the signed transaction creating a new asset
+          * @ingroup WalletCLI
+          */
+         signed_transaction create_monitored_asset(string issuer,
+                                                   string symbol,
+                                                   uint8_t precision,
+                                                   string description,
+                                                   uint32_t feed_lifetime_sec,
+                                                   uint8_t minimum_feeds,
+                                                   bool broadcast = false);
 
-      /**
-       * @brief Creates a new monitored asset.
-       *
-       * Options can be changed later using \c update_monitored_asset()
-       *
-       * @param issuer the name or id of the account who will pay the fee and become the
-       *               issuer of the new asset.  This can be updated later
-       * @param symbol the ticker symbol of the new asset
-       * @param precision the number of digits of precision to the right of the decimal point,
-       *                  must be less than or equal to 12
-       * @param description asset description. Maximal length is 1000 chars.
-       * @param feed_lifetime_sec time before a price feed expires
-       * @param minimum_feeds minimum number of unexpired feeds required to extract a median feed from
-       * @param broadcast true to broadcast the transaction on the network
-       * @returns the signed transaction creating a new asset
-       * @ingroup WalletCLI
-       */
-      signed_transaction create_monitored_asset(string issuer,
-                                                string symbol,
-                                                uint8_t precision,
-                                                string description,
-                                                uint32_t feed_lifetime_sec,
-                                                uint8_t minimum_feeds,
-                                                bool broadcast = false);
+         /**
+          * @brief Update the options specific to a monitored asset.
+          *
+          * Monitored assets have some options which are not relevant to other asset types. This operation is used to update those
+          * options and an existing monitored asset.
+          *
+          * @param symbol the name or id of the asset to update, which must be a market-issued asset
+          * @param description asset description
+          * @param feed_lifetime_sec time before a price feed expires
+          * @param minimum_feeds minimum number of unexpired feeds required to extract a median feed from
+          * @param broadcast true to broadcast the transaction on the network
+          * @returns the signed transaction updating the bitasset
+          * @ingroup WalletCLI
+          */
+         signed_transaction update_monitored_asset(string symbol,
+                                                   string description,
+                                                   uint32_t feed_lifetime_sec,
+                                                   uint8_t minimum_feeds,
+                                                   bool broadcast = false);
 
-      /**
-       * @brief Update the options specific to a monitored asset.
-       *
-       * Monitored assets have some options which are not relevant to other asset types. This operation is used to update those
-       * options and an existing monitored asset.
-       *
-       * @param symbol the name or id of the asset to update, which must be a market-issued asset
-       * @param description asset description
-       * @param feed_lifetime_sec time before a price feed expires
-       * @param minimum_feeds minimum number of unexpired feeds required to extract a median feed from
-       * @param broadcast true to broadcast the transaction on the network
-       * @returns the signed transaction updating the bitasset
-       * @ingroup WalletCLI
-       */
-      signed_transaction update_monitored_asset(string symbol,
-                                                string description,
-                                                uint32_t feed_lifetime_sec,
-                                                uint8_t minimum_feeds,
-                                                bool broadcast = false);
+         /**
+          * @brief Creates a new user-issued asset.
+          *
+          * Options can be changed later using \c update_asset()
+          *
+          * @param issuer the name or id of the account who will pay the fee and become the
+          *               issuer of the new asset.  This can be updated later
+          * @param symbol the ticker symbol of the new asset
+          * @param precision the number of digits of precision to the right of the decimal point,
+          *                  must be less than or equal to 12
+          * @param description asset description. Maximal length is 1000 chars
+          * @param max_supply the maximum supply of this asset which may exist at any given time
+          * @param core_exchange_rate Core_exchange_rate technically needs to store the asset ID of
+          *               this new asset. Since this ID is not known at the time this operation is
+          *               created, create this price as though the new asset has instance ID 1, and
+          *               the chain will overwrite it with the new asset's ID
+          * @param is_exchangeable True to allow implicit conversion of this asset to/from core asset
+          * @param broadcast true to broadcast the transaction on the network
+          * @returns the signed transaction creating a new asset
+          * @ingroup WalletCLI
+          */
+         signed_transaction create_user_issued_asset(string issuer,
+                                                     string symbol,
+                                                     uint8_t precision,
+                                                     string description,
+                                                     uint64_t max_supply,
+                                                     price core_exchange_rate,
+                                                     bool is_exchangeable,
+                                                     bool broadcast = false);
 
-      /**
-       * @brief Creates a new user-issued asset.
-       *
-       * Options can be changed later using \c update_asset()
-       *
-       * @param issuer the name or id of the account who will pay the fee and become the
-       *               issuer of the new asset.  This can be updated later
-       * @param symbol the ticker symbol of the new asset
-       * @param precision the number of digits of precision to the right of the decimal point,
-       *                  must be less than or equal to 12
-       * @param description asset description. Maximal length is 1000 chars
-       * @param max_supply the maximum supply of this asset which may exist at any given time
-       * @param core_exchange_rate Core_exchange_rate technically needs to store the asset ID of
-       *               this new asset. Since this ID is not known at the time this operation is
-       *               created, create this price as though the new asset has instance ID 1, and
-       *               the chain will overwrite it with the new asset's ID
-       * @param is_exchangeable True to allow implicit conversion of this asset to/from core asset
-       * @param broadcast true to broadcast the transaction on the network
-       * @returns the signed transaction creating a new asset
-       * @ingroup WalletCLI
-       */
-      signed_transaction create_user_issued_asset(string issuer,
-                                                  string symbol,
-                                                  uint8_t precision,
-                                                  string description,
-                                                  uint64_t max_supply,
-                                                  price core_exchange_rate,
-                                                  bool is_exchangeable,
-                                                  bool broadcast = false);
-
-      /** Issue new shares of an asset.
-       *
-       * @param to_account the name or id of the account to receive the new shares
-       * @param amount the amount to issue, in nominal units
-       * @param symbol the ticker symbol of the asset to issue
-       * @param memo a memo to include in the transaction, readable by the recipient
-       * @param broadcast true to broadcast the transaction on the network
-       * @returns the signed transaction issuing the new shares
-       */
+         /** Issue new shares of an asset.
+          *
+          * @param to_account the name or id of the account to receive the new shares
+          * @param amount the amount to issue, in nominal units
+          * @param symbol the ticker symbol of the asset to issue
+          * @param memo a memo to include in the transaction, readable by the recipient
+          * @param broadcast true to broadcast the transaction on the network
+          * @returns the signed transaction issuing the new shares
+          */
          signed_transaction issue_asset(string to_account,
                                         string amount,
                                         string symbol,
                                         string memo,
                                         bool broadcast = false);
 
-      /**
-       * @brief Update the options specific to a user issued asset.
-       *
-       * User issued assets have some options which are not relevant to other asset types. This operation is used to update those
-       * options an an existing user issues asset.
-       *
-       *
-       * @param symbol the name or id of the asset to update, which must be a market-issued asset
-       * @param new_issuer if the asset is to be given a new issuer, specify his ID here
-       * @param description asset description
-       * @param max_supply The maximum supply of this asset which may exist at any given time
-       * @param core_exchange_rate Price used to convert non-core asset to core asset
-       * @param is_exchangeable True to allow implicit conversion of this asset to/from core asset
-       * @param broadcast true to broadcast the transaction on the network
-       * @returns the signed transaction updating the bitasset
-       * @ingroup WalletCLI
-       */
-      signed_transaction update_user_issued_asset(string symbol,
-                                                  string new_issuer,
-                                                  string description,
-                                                  uint64_t max_supply,
-                                                  price core_exchange_rate,
-                                                  bool is_exchangeable,
-                                                  bool broadcast = false);
+         /**
+          * @brief Update the options specific to a user issued asset.
+          *
+          * User issued assets have some options which are not relevant to other asset types. This operation is used to update those
+          * options an an existing user issues asset.
+          *
+          *
+          * @param symbol the name or id of the asset to update, which must be a market-issued asset
+          * @param new_issuer if the asset is to be given a new issuer, specify his ID here
+          * @param description asset description
+          * @param max_supply The maximum supply of this asset which may exist at any given time
+          * @param core_exchange_rate Price used to convert non-core asset to core asset
+          * @param is_exchangeable True to allow implicit conversion of this asset to/from core asset
+          * @param broadcast true to broadcast the transaction on the network
+          * @returns the signed transaction updating the bitasset
+          * @ingroup WalletCLI
+          */
+         signed_transaction update_user_issued_asset(string symbol,
+                                                     string new_issuer,
+                                                     string description,
+                                                     uint64_t max_supply,
+                                                     price core_exchange_rate,
+                                                     bool is_exchangeable,
+                                                     bool broadcast = false);
 
-      /** Pay into the pools for the given asset.
-       *
-       * User-issued assets can optionally have a pool of the core asset which is
-       * automatically used to pay transaction fees for any transaction using that
-       * asset (using the asset's core exchange rate).
-       *
-       * Allows anyone to deposit core/asset into pools.
-       * This pool are used when conversion between assets is needed (paying fees, paying for a content in different asset).
-       *
-       * @param from the name or id of the account sending the core asset
-       * @param uia_amount the amount of "this" asset to deposit
-       * @param uia_symbol the name or id of the asset whose pool you wish to fund
-       * @param dct_amount the amount of the core asset to deposit
-       * @param dct_symbol the name or id of the DCT asset
-       * @param broadcast true to broadcast the transaction on the network
-       * @returns the signed transaction funding the fee pool
-       */
-      signed_transaction fund_asset_pools(string from,
-                                          string uia_amount,
-                                          string uia_symbol,
-                                          string dct_amount,
-                                          string dct_symbol,
+         /** Pay into the pools for the given asset.
+          *
+          * User-issued assets can optionally have a pool of the core asset which is
+          * automatically used to pay transaction fees for any transaction using that
+          * asset (using the asset's core exchange rate).
+          *
+          * Allows anyone to deposit core/asset into pools.
+          * This pool are used when conversion between assets is needed (paying fees, paying for a content in different asset).
+          *
+          * @param from the name or id of the account sending the core asset
+          * @param uia_amount the amount of "this" asset to deposit
+          * @param uia_symbol the name or id of the asset whose pool you wish to fund
+          * @param dct_amount the amount of the core asset to deposit
+          * @param dct_symbol the name or id of the DCT asset
+          * @param broadcast true to broadcast the transaction on the network
+          * @returns the signed transaction funding the fee pool
+          */
+         signed_transaction fund_asset_pools(string from,
+                                             string uia_amount,
+                                             string uia_symbol,
+                                             string dct_amount,
+                                             string dct_symbol,
+                                             bool broadcast = false);
+
+         /** Burns the given user-issued asset.
+          *
+          * This command burns the user-issued asset to reduce the amount in circulation.
+          * @note you cannot burn market-issued assets.
+          * @param from the account containing the asset you wish to burn
+          * @param amount the amount to burn, in nominal units
+          * @param symbol the name or id of the asset to burn
+          * @param broadcast true to broadcast the transaction on the network
+          * @returns the signed transaction burning the asset
+          */
+         signed_transaction reserve_asset(string from,
+                                          string amount,
+                                          string symbol,
                                           bool broadcast = false);
 
-      /** Burns the given user-issued asset.
-       *
-       * This command burns the user-issued asset to reduce the amount in circulation.
-       * @note you cannot burn market-issued assets.
-       * @param from the account containing the asset you wish to burn
-       * @param amount the amount to burn, in nominal units
-       * @param symbol the name or id of the asset to burn
-       * @param broadcast true to broadcast the transaction on the network
-       * @returns the signed transaction burning the asset
-       */
-      signed_transaction reserve_asset(string from,
-                                       string amount,
-                                       string symbol,
+         /** Transfers accumulated assets from pools back to the issuer's balance.
+          *
+          * @note you cannot claim assets from pools of market-issued asset.
+          * @param uia_amount the amount of "this" asset to claim, in nominal units
+          * @param uia_symbol the name or id of the asset to claim
+          * @param dct_amount the amount of DCT asset to claim, in nominal units
+          * @param dct_symbol the name or id of the DCT asset to claim
+          * @param broadcast true to broadcast the transaction on the network
+          * @returns the signed transaction claiming the fees
+          */
+         signed_transaction claim_fees(string uia_amount,
+                                       string uia_symbol,
+                                       string dct_amount,
+                                       string dct_symbol,
                                        bool broadcast = false);
-
-      /** Transfers accumulated assets from pools back to the issuer's balance.
-       *
-       * @note you cannot claim assets from pools of market-issued asset.
-       * @param uia_amount the amount of "this" asset to claim, in nominal units
-       * @param uia_symbol the name or id of the asset to claim
-       * @param dct_amount the amount of DCT asset to claim, in nominal units
-       * @param dct_symbol the name or id of the DCT asset to claim
-       * @param broadcast true to broadcast the transaction on the network
-       * @returns the signed transaction claiming the fees
-       */
-      signed_transaction claim_fees(string uia_amount,
-                                    string uia_symbol,
-                                    string dct_amount,
-                                    string dct_symbol,
-                                    bool broadcast = false);
 
          /**
           * @brief Converts asset into DCT, using actual price feed.
@@ -1141,8 +1143,8 @@ namespace graphene { namespace wallet {
           * @returns list of price feeds published by the miner
           * @ingroup WalletCLI
           */
-         multimap<time_point_sec, price_feed> get_feeds_by_miner(const string& account_name_or_id,
-                                                               const uint32_t count);
+         multimap<time_point_sec, price_feed> get_feeds_by_miner(const string &account_name_or_id,
+                                                                 const uint32_t count);
 
          /**
           * @brief Lists all miners registered in the blockchain.
@@ -1159,7 +1161,7 @@ namespace graphene { namespace wallet {
           * @returns a list of miners mapping miner names to miner ids
           * @ingroup WalletCLI
           */
-         map<string,miner_id_type>       list_miners(const string& lowerbound, uint32_t limit);
+         map<string, miner_id_type> list_miners(const string &lowerbound, uint32_t limit);
 
          /**
           * s@brief Returns information about the given miner.
@@ -1182,8 +1184,8 @@ namespace graphene { namespace wallet {
            * @ingroup WalletCLI
            */
          signed_transaction create_miner(string owner_account,
-                                           string url,
-                                           bool broadcast = false);
+                                         string url,
+                                         bool broadcast = false);
 
          /**
           * @brief Update a miner object owned by the given account.
@@ -1195,9 +1197,9 @@ namespace graphene { namespace wallet {
           * @ingroup WalletCLI
           */
          signed_transaction update_miner(string miner_name,
-                                           string url,
-                                           string block_signing_key,
-                                           bool broadcast = false);
+                                         string url,
+                                         string block_signing_key,
+                                         bool broadcast = false);
 
          /**
           * @brief Get information about a vesting balance object.
@@ -1205,7 +1207,7 @@ namespace graphene { namespace wallet {
           * @param account_name An account name, account ID, or vesting balance object ID.
           * @ingroup WalletCLI
           */
-         vector< vesting_balance_object_with_info > get_vesting_balances( string account_name );
+         vector<vesting_balance_object_with_info> get_vesting_balances(string account_name);
 
          /**
           * @brief Withdraw a vesting balance.
@@ -1242,9 +1244,9 @@ namespace graphene { namespace wallet {
           * @ingroup WalletCLI
           */
          signed_transaction vote_for_miner(string voting_account,
-                                             string miner,
-                                             bool approve,
-                                             bool broadcast = false);
+                                           string miner,
+                                           bool approve,
+                                           bool broadcast = false);
 
          /**
           * @brief Set the voting proxy for an account.
@@ -1292,8 +1294,8 @@ namespace graphene { namespace wallet {
           * @ingroup WalletCLI
           */
          signed_transaction set_desired_miner_count(string account_to_modify,
-                                                      uint16_t desired_number_of_miners,
-                                                      bool broadcast = false);
+                                                    uint16_t desired_number_of_miners,
+                                                    bool broadcast = false);
 
          /**
           * @brief Signs a transaction.
@@ -1341,9 +1343,9 @@ namespace graphene { namespace wallet {
           * @ingroup WalletCLI
           */
          signed_transaction propose_parameter_change(
-            const string& proposing_account,
+            const string &proposing_account,
             fc::time_point_sec expiration_time,
-            const variant_object& changed_values,
+            const variant_object &changed_values,
             bool broadcast = false);
 
          /**
@@ -1358,9 +1360,9 @@ namespace graphene { namespace wallet {
           * @ingroup WalletCLI
           */
          signed_transaction propose_fee_change(
-            const string& proposing_account,
+            const string &proposing_account,
             fc::time_point_sec expiration_time,
-            const variant_object& changed_values,
+            const variant_object &changed_values,
             bool broadcast = false);
 
          /**
@@ -1377,9 +1379,9 @@ namespace graphene { namespace wallet {
           * @ingroup WalletCLI
           */
          signed_transaction approve_proposal(
-            const string& fee_paying_account,
-            const string& proposal_id,
-            const approval_delta& delta,
+            const string &fee_paying_account,
+            const string &proposal_id,
+            const approval_delta &delta,
             bool broadcast /* = false */
          );
 
@@ -1397,7 +1399,7 @@ namespace graphene { namespace wallet {
           * @param count
           * @ingroup WalletCLI
           */
-         void dbg_push_blocks( std::string src_filename, uint32_t count );
+         void dbg_push_blocks(std::string src_filename, uint32_t count);
 
          /**
           *
@@ -1405,21 +1407,21 @@ namespace graphene { namespace wallet {
           * @param count
           * @ingroup WalletCLI
           */
-         void dbg_generate_blocks( std::string debug_wif_key, uint32_t count );
+         void dbg_generate_blocks(std::string debug_wif_key, uint32_t count);
 
          /**
           *
           * @param filename
           * @ingroup WalletCLI
           */
-         void dbg_stream_json_objects( const std::string& filename );
+         void dbg_stream_json_objects(const std::string &filename);
 
          /**
           *
           * @param update
           * @ingroup WalletCLI
           */
-         void dbg_update_object( fc::variant_object update );
+         void dbg_update_object(fc::variant_object update);
 
          /**
           *
@@ -1434,26 +1436,27 @@ namespace graphene { namespace wallet {
           * @param nodes
           * @ingroup WalletCLI
           */
-         void network_add_nodes( const vector<string>& nodes );
+         void network_add_nodes(const vector<string> &nodes);
 
          /**
           *
           * @ingroup WalletCLI
           */
-         vector< variant > network_get_connected_peers();
+         vector<variant> network_get_connected_peers();
 
 
-         std::map<string,std::function<string(fc::variant,const fc::variants&)>> get_result_formatters() const;
+         std::map<string, std::function<string(fc::variant, const fc::variants &)>> get_result_formatters() const;
 
          fc::signal<void(bool)> lock_changed;
          std::shared_ptr<detail::wallet_api_impl> my;
+
          void encrypt_keys();
 
          /**
           * Get current supply of the core asset
           * @ingroup WalletCLI
           */
-         real_supply get_real_supply()const;
+         real_supply get_real_supply() const;
 
          /**
           * @brief This method is used to promote account to publishing manager.
@@ -1494,7 +1497,7 @@ namespace graphene { namespace wallet {
           * @return List of accounts
           * @ingroup WalletCLI
           */
-         vector<account_id_type> list_publishing_managers( const string& lower_bound_name, uint32_t limit );
+         vector<account_id_type> list_publishing_managers(const string &lower_bound_name, uint32_t limit);
 
          /**
           * @brief Submits or resubmits content to the blockchain. In a case of resubmit, co-authors, price and synopsis fields
@@ -1519,20 +1522,20 @@ namespace graphene { namespace wallet {
           * @ingroup WalletCLI
           */
          signed_transaction
-         submit_content(string const& author,
-                        vector< pair< string, uint32_t>> co_authors,
-                        string const& URI,
-                        vector <regional_price_info> const& price_amounts,
+         submit_content(string const &author,
+                        vector<pair<string, uint32_t>> co_authors,
+                        string const &URI,
+                        vector<regional_price_info> const &price_amounts,
                         uint64_t size,
-                        fc::ripemd160 const& hash,
-                        vector<account_id_type> const& seeders,
+                        fc::ripemd160 const &hash,
+                        vector<account_id_type> const &seeders,
                         uint32_t quorum,
-                        fc::time_point_sec const& expiration,
-                        string const& publishing_fee_asset,
-                        string const& publishing_fee_amount,
-                        string const& synopsis,
-                        DInteger const& secret,
-                        decent::encrypt::CustodyData const& cd,
+                        fc::time_point_sec const &expiration,
+                        string const &publishing_fee_asset,
+                        string const &publishing_fee_amount,
+                        string const &synopsis,
+                        DInteger const &secret,
+                        decent::encrypt::CustodyData const &cd,
                         bool broadcast);
 
          /**
@@ -1553,15 +1556,15 @@ namespace graphene { namespace wallet {
           * @ingroup WalletCLI
           */
 
-         void submit_content_async( string const &author,
-                                             vector< pair< string, uint32_t>> co_authors,
-                                             string const &content_dir,
-                                             string const &samples_dir,
-                                             string const &protocol,
-                                             vector<regional_price_info> const &price_amounts,
-                                             vector<account_id_type> const &seeders,
-                                             fc::time_point_sec const &expiration,
-                                             string const &synopsis);
+         void submit_content_async(string const &author,
+                                   vector<pair<string, uint32_t>> co_authors,
+                                   string const &content_dir,
+                                   string const &samples_dir,
+                                   string const &protocol,
+                                   vector<regional_price_info> const &price_amounts,
+                                   vector<account_id_type> const &seeders,
+                                   fc::time_point_sec const &expiration,
+                                   string const &synopsis);
 
 
          /**
@@ -1585,7 +1588,8 @@ namespace graphene { namespace wallet {
           * @param broadcast true to broadcast the transaction on the network
           * @ingroup WalletCLI
           */
-         void download_content(string const& consumer, string const& URI, string const& region_code_from, bool broadcast = false);
+         void download_content(string const &consumer, string const &URI, string const &region_code_from,
+                               bool broadcast = false);
 
          /**
           * @brief Get status about particular download process specified by provided URI.
@@ -1625,13 +1629,13 @@ namespace graphene { namespace wallet {
           * @param region_code Optional ISO 3166-1 alpha-2 two-letter region code
           * @ingroup WalletCLI
           */
-         void seeding_startup( string account_id_type_or_name,
-                               DInteger content_private_key,
-                               string seeder_private_key,
-                               uint64_t free_space,
-                               uint32_t seeding_price,
-                               string packages_path,
-                               string region_code = "" );
+         void seeding_startup(string account_id_type_or_name,
+                              DInteger content_private_key,
+                              string seeder_private_key,
+                              uint64_t free_space,
+                              uint32_t seeding_price,
+                              string packages_path,
+                              string region_code = "");
 
          /**
           * @brief Rates and comments a content.
@@ -1658,11 +1662,11 @@ namespace graphene { namespace wallet {
           * @return The signed transaction subscribing the consumer to the author
           * @ingroup WalletCLI
           */
-         signed_transaction subscribe_to_author( string from,
-                                                 string to,
-                                                 string price_amount,
-                                                 string price_asset_symbol,
-                                                 bool broadcast/* = false */);
+         signed_transaction subscribe_to_author(string from,
+                                                string to,
+                                                string price_amount,
+                                                string price_asset_symbol,
+                                                bool broadcast/* = false */);
 
          /**
           * @brief Creates a subscription to author. This function is used by author.
@@ -1672,9 +1676,9 @@ namespace graphene { namespace wallet {
           * @return The signed transaction subscribing the consumer to the author
           * @ingroup WalletCLI
           */
-         signed_transaction subscribe_by_author( string from,
-                                                 string to,
-                                                 bool broadcast/* = false */);
+         signed_transaction subscribe_by_author(string from,
+                                                string to,
+                                                bool broadcast/* = false */);
 
          /**
           * @brief This function can be used to allow/disallow subscription.
@@ -1687,12 +1691,12 @@ namespace graphene { namespace wallet {
           * @return The signed transaction updating the account
           * @ingroup WalletCLI
           */
-         signed_transaction set_subscription( string account,
-                                              bool allow_subscription,
-                                              uint32_t subscription_period,
-                                              string price_amount,
-                                              string price_asset_symbol,
-                                              bool broadcast/* = false */);
+         signed_transaction set_subscription(string account,
+                                             bool allow_subscription,
+                                             uint32_t subscription_period,
+                                             string price_amount,
+                                             string price_asset_symbol,
+                                             bool broadcast/* = false */);
 
          /**
           * @brief This function can be used to allow/disallow automatic renewal of expired subscription.
@@ -1703,10 +1707,10 @@ namespace graphene { namespace wallet {
           * @return The signed transaction allowing/disallowing renewal of the subscription
           * @ingroup WalletCLI
           */
-         signed_transaction set_automatic_renewal_of_subscription( string account_id_or_name,
-                                                                   subscription_id_type subscription_id,
-                                                                   bool automatic_renewal,
-                                                                   bool broadcast/* = false */);
+         signed_transaction set_automatic_renewal_of_subscription(string account_id_or_name,
+                                                                  subscription_id_type subscription_id,
+                                                                  bool automatic_renewal,
+                                                                  bool broadcast/* = false */);
 
          /**
           * @brief Get a list of consumer's active (not expired) subscriptions.
@@ -1715,7 +1719,8 @@ namespace graphene { namespace wallet {
           * @return List of active subscription objects corresponding to the provided consumer
           * @ingroup WalletCLI
           */
-         vector< subscription_object > list_active_subscriptions_by_consumer( const string& account_id_or_name, const uint32_t count)const;
+         vector<subscription_object>
+         list_active_subscriptions_by_consumer(const string &account_id_or_name, const uint32_t count) const;
 
          /**
           * @brief Get a list of consumer's subscriptions.
@@ -1724,7 +1729,8 @@ namespace graphene { namespace wallet {
           * @return List of subscription objects corresponding to the provided consumer
           * @ingroup WalletCLI
           */
-         vector< subscription_object > list_subscriptions_by_consumer( const string& account_id_or_name, const uint32_t count)const;
+         vector<subscription_object>
+         list_subscriptions_by_consumer(const string &account_id_or_name, const uint32_t count) const;
 
          /**
           * @brief Get a list of active (not expired) subscriptions to author.
@@ -1733,7 +1739,8 @@ namespace graphene { namespace wallet {
           * @return List of active subscription objects corresponding to the provided author
           * @ingroup WalletCLI
           */
-         vector< subscription_object > list_active_subscriptions_by_author( const string& account_id_or_name, const uint32_t count)const;
+         vector<subscription_object>
+         list_active_subscriptions_by_author(const string &account_id_or_name, const uint32_t count) const;
 
          /**
           * @brief Get a list of subscriptions to author.
@@ -1742,7 +1749,8 @@ namespace graphene { namespace wallet {
           * @return List of subscription objects corresponding to the provided author
           * @ingroup WalletCLI
           */
-         vector< subscription_object > list_subscriptions_by_author( const string& account_id_or_name, const uint32_t count)const;
+         vector<subscription_object>
+         list_subscriptions_by_author(const string &account_id_or_name, const uint32_t count) const;
 
          /**
           * @brief Restores AES key( used to encrypt and decrypt a content) from key particles stored in a buying object
@@ -1759,13 +1767,13 @@ namespace graphene { namespace wallet {
           * @ingroup WalletCLI
           */
          el_gamal_key_pair generate_el_gamal_keys() const;
-         
+
          /**
           * @brief Gets unique ElGamal key pair for consumer.
           * @return Pair of ElGamal keys
           * @ingroup WalletCLI
           */
-         el_gamal_key_pair_str get_el_gammal_key(string const& consumer) const;
+         el_gamal_key_pair_str get_el_gammal_key(string const &consumer) const;
 
 
          /**
@@ -1780,7 +1788,7 @@ namespace graphene { namespace wallet {
           * @return Open buying objects
           * @ingroup WalletCLI
           */
-         vector<buying_object> get_open_buyings()const;
+         vector<buying_object> get_open_buyings() const;
 
          /**
           * @brief Get a list of open buyings by URI
@@ -1788,7 +1796,7 @@ namespace graphene { namespace wallet {
           * @return Open buyings corresponding to the provided URI
           * @ingroup WalletCLI
           */
-         vector<buying_object> get_open_buyings_by_URI( const string& URI )const;
+         vector<buying_object> get_open_buyings_by_URI(const string &URI) const;
 
          /**
           * @brief Get a list of open buyings by consumer
@@ -1796,7 +1804,7 @@ namespace graphene { namespace wallet {
           * @return Open buyings corresponding to the provided consumer
           * @ingroup WalletCLI
           */
-         vector<buying_object> get_open_buyings_by_consumer( const string& account_id_or_name )const;
+         vector<buying_object> get_open_buyings_by_consumer(const string &account_id_or_name) const;
 
          /**
           * @brief Get history buyings by consumer
@@ -1804,7 +1812,7 @@ namespace graphene { namespace wallet {
           * @return History buying objects corresponding to the provided consumer
           * @ingroup WalletCLI
           */
-         vector<buying_object> get_buying_history_objects_by_consumer( const string& account_id_or_name )const;
+         vector<buying_object> get_buying_history_objects_by_consumer(const string &account_id_or_name) const;
 
          /**
           * @brief Get history buying objects by consumer that match search term
@@ -1816,10 +1824,10 @@ namespace graphene { namespace wallet {
           * @return History buying objects corresponding to the provided consumer and matching search term
           * @ingroup WalletCLI
           */
-         vector<buying_object_ex> search_my_purchases(const string& account_id_or_name,
-                                                      const string& term,
-                                                      const string& order,
-                                                      const string& id,
+         vector<buying_object_ex> search_my_purchases(const string &account_id_or_name,
+                                                      const string &term,
+                                                      const string &order,
+                                                      const string &id,
                                                       uint32_t count) const;
 
          /**
@@ -1829,7 +1837,7 @@ namespace graphene { namespace wallet {
          * @return Buying_objects corresponding to the provided consumer, or null if no matching buying was found
          * @ingroup WalletCLI
          */
-         optional<buying_object> get_buying_by_consumer_URI( const string& account_id_or_name, const string & URI )const;
+         optional<buying_object> get_buying_by_consumer_URI(const string &account_id_or_name, const string &URI) const;
 
          /**
           * @brief Search for term in contents (author, title and description)
@@ -1840,9 +1848,9 @@ namespace graphene { namespace wallet {
           * @return The feedback found
           * @ingroup WalletCLI
           */
-         vector<rating_object_ex> search_feedback(const string& user,
-                                                  const string& URI,
-                                                  const string& id,
+         vector<rating_object_ex> search_feedback(const string &user,
+                                                  const string &URI,
+                                                  const string &id,
                                                   uint32_t count) const;
 
          /**
@@ -1851,8 +1859,8 @@ namespace graphene { namespace wallet {
           * @return The content corresponding to the provided URI, or null if no matching content was found
           * @ingroup WalletCLI
           */
-         optional<content_object> get_content( const string& URI )const;
-         
+         optional<content_object> get_content(const string &URI) const;
+
          /**
           * @brief Get a list of contents ordered alphabetically by search term
           * @param term Search term
@@ -1865,13 +1873,14 @@ namespace graphene { namespace wallet {
           * @return The contents found
           * @ingroup WalletCLI
           */
-         vector<content_summary> search_content(const string& term,
-                                                const string& order,
-                                                const string& user,
-                                                const string& region_code,
-                                                const string& id,
-                                                const string& type,
-                                                uint32_t count )const;
+         vector<content_summary> search_content(const string &term,
+                                                const string &order,
+                                                const string &user,
+                                                const string &region_code,
+                                                const string &id,
+                                                const string &type,
+                                                uint32_t count) const;
+
          /**
           * @brief Get a list of contents ordered alphabetically by search term
           * @param user Content owner
@@ -1884,13 +1893,13 @@ namespace graphene { namespace wallet {
           * @return The contents found
           * @ingroup WalletCLI
           */
-         vector<content_summary> search_user_content(const string& user,
-                                                     const string& term,
-                                                     const string& order,
-                                                     const string& region_code,
-                                                     const string& id,
-                                                     const string& type,
-                                                     uint32_t count )const;
+         vector<content_summary> search_user_content(const string &user,
+                                                     const string &term,
+                                                     const string &order,
+                                                     const string &region_code,
+                                                     const string &id,
+                                                     const string &type,
+                                                     uint32_t count) const;
 
          /**
           * @brief Get a list of seeders by price, in increasing order
@@ -1898,7 +1907,7 @@ namespace graphene { namespace wallet {
           * @return The seeders found
           * @ingroup WalletCLI
           */
-         vector<seeder_object> list_publishers_by_price( uint32_t count )const;
+         vector<seeder_object> list_publishers_by_price(uint32_t count) const;
 
          /**
           * @brief Get a list of seeders ordered by total upload, in decreasing order
@@ -1906,7 +1915,7 @@ namespace graphene { namespace wallet {
           * @return The seeders found
           * @ingroup WalletCLI
           */
-         optional<vector<seeder_object>> list_seeders_by_upload( const uint32_t count )const;
+         optional<vector<seeder_object>> list_seeders_by_upload(const uint32_t count) const;
 
          /**
           * @brief Get a list of seeders by region code
@@ -1914,7 +1923,7 @@ namespace graphene { namespace wallet {
           * @return The seeders found
           * @ingroup WalletCLI
           */
-         vector<seeder_object> list_seeders_by_region( const string region_code )const;
+         vector<seeder_object> list_seeders_by_region(const string region_code) const;
 
          /**
           * @brief Get a list of seeders ordered by rating, in decreasing order
@@ -1922,14 +1931,14 @@ namespace graphene { namespace wallet {
           * @return The seeders found
           * @ingroup WalletCLI
           */
-         vector<seeder_object> list_seeders_by_rating( const uint32_t count )const;
+         vector<seeder_object> list_seeders_by_rating(const uint32_t count) const;
 
          /**
           * @brief Get author and list of co-authors of a content corresponding to the provided URI
           * @param URI URI of the content
           * @return The autor of the content and the list of co-authors, if provided
           */
-         pair<account_id_type, vector<account_id_type>> get_author_and_co_authors_by_URI( const string& URI )const;
+         pair<account_id_type, vector<account_id_type>> get_author_and_co_authors_by_URI(const string &URI) const;
 
          /**
           * @brief Create package from selected files
@@ -1939,7 +1948,8 @@ namespace graphene { namespace wallet {
           * @return package hash (ripemd160 hash of package content) and content custody data
           * @ingroup WalletCLI
           */
-         std::pair<string, decent::encrypt::CustodyData> create_package(const std::string& content_dir, const std::string& samples_dir, const DInteger& aes_key) const;
+         std::pair<string, decent::encrypt::CustodyData>
+         create_package(const std::string &content_dir, const std::string &samples_dir, const DInteger &aes_key) const;
 
 
          /**
@@ -1949,14 +1959,15 @@ namespace graphene { namespace wallet {
           * @param aes_key AES key for decryption
           * @ingroup WalletCLI
           */
-         void extract_package(const std::string& package_hash, const std::string& output_dir, const DInteger& aes_key) const;
+         void
+         extract_package(const std::string &package_hash, const std::string &output_dir, const DInteger &aes_key) const;
 
          /**
           * @brief Download package
           * @param url Magnet or IPFS URL of package
           * @ingroup WalletCLI
           */
-         void download_package(const std::string& url) const;
+         void download_package(const std::string &url) const;
 
          /**
           * @brief Start uploading package
@@ -1964,14 +1975,14 @@ namespace graphene { namespace wallet {
           * @param protocol protocol for uploading package ( ipfs )
           * @ingroup WalletCLI
           */
-         std::string upload_package(const std::string& package_hash, const std::string& protocol) const;
+         std::string upload_package(const std::string &package_hash, const std::string &protocol) const;
 
          /**
           * @brief Remove package
           * @param package_hash Hash of package that needs to be removed
           * @ingroup WalletCLI
           */
-         void remove_package(const std::string& package_hash) const;
+         void remove_package(const std::string &package_hash) const;
 
          /**
           * @brief Print statuses of all active transfers
@@ -1987,8 +1998,8 @@ namespace graphene { namespace wallet {
           * @return The signed buffer
           * @ingroup WalletCLI
           */
-         std::string sign_buffer(std::string const& str_buffer,
-                                 std::string const& str_brainkey) const;
+         std::string sign_buffer(std::string const &str_buffer,
+                                 std::string const &str_brainkey) const;
 
          /**
           * @brief Verify if the signature is valid
@@ -1998,9 +2009,9 @@ namespace graphene { namespace wallet {
           * @return true if valid, otherwise false
           * @ingroup WalletCLI
           */
-         bool verify_signature(std::string const& str_buffer,
-                               std::string const& str_publickey,
-                               std::string const& str_signature) const;
+         bool verify_signature(std::string const &str_buffer,
+                               std::string const &str_publickey,
+                               std::string const &str_signature) const;
 
          /**
           * @brief Query the last local block
@@ -2011,7 +2022,7 @@ namespace graphene { namespace wallet {
          /**
          * @brief Send text message
          */
-         signed_transaction send_message(const std::string& from, string to, string text, bool broadcast);
+         signed_transaction send_message(const std::string &from, string to, string text, bool broadcast);
 
          /**
          * @brief Receives message objects by receiver
@@ -2019,7 +2030,7 @@ namespace graphene { namespace wallet {
          * @param max_count Maximal number of last messages to be displayed
          * @return vector of message objects
          */
-         vector<message_object> get_message_objects(const std::string& receiver, uint32_t max_count) const;
+         vector<message_object> get_message_objects(const std::string &receiver, uint32_t max_count) const;
 
          /**
          * @brief Receives messages by receiver
@@ -2027,42 +2038,10 @@ namespace graphene { namespace wallet {
          * @param max_count Maximal number of last messages to be displayed
          * @return vector of message objects
          */
-         vector<text_message> get_messages(const std::string& receiver, uint32_t max_count) const;
+         vector<text_message> get_messages(const std::string &receiver, uint32_t max_count) const;
 
-         /**
-          * @brief Sends an invoice to receiver.
-          * @param from The name or ID of the account sending the invoice
-          * @param to The name or ID of the account receiving the invoice
-          * @param tx_id The identifier of the invoice
-          * @param data The data will be encrypted in the transaction and readable for the sender and the receiver
-          * @param broadcast True if you wish to broadcast the transaction
-          * @return The signed transaction sending the invoice
-          */
-         signed_transaction send_stx_invoice(const string& from,
-                                             const string& to,
-                                             uint64_t transaction_id,
-                                             const string& data,
-                                             bool broadcast)const;
-
-         /**
-          * @brief Decodes data from custom operation
-          * @param data Encoded data from custom operation
-          * @return Readable data structure
-          */
-         stx_invoice_payload get_stx_invoice_data( const vector<char>& data ) const;
-
-         /**
-          * @brief Encrypts data
-          * @param data Encrypted data
-          * @param wif_priv_key Sender's/receiver's private key
-          * @param pub_key Receiver's/sender's public key
-          * @param nonce Random number used to generate shared secret. Can be obtained from the existing stx_invoice_payload
-          * @return Decrypted data
-          */
-         string extract_stx_invoice_data(const vector<char>& data,
-                                         const string& wif_priv_key,
-                                         const public_key_type& pub_key,
-                                         uint64_t nonce) const;
+         signed_transaction send_trans(const stx_payload& stx_pl) const;
+         vector<stx_object> recv_trans(const stx_payload& stx_pl) const;
       };
 
    } }
@@ -2276,7 +2255,6 @@ FC_API( graphene::wallet::wallet_api,
            (send_message)
            (get_message_objects)
            (get_messages)
-           (send_stx_invoice)
-           (get_stx_invoice_data)
-           (extract_stx_invoice_data)
+           (send_trans)
+           (recv_trans)
 )
