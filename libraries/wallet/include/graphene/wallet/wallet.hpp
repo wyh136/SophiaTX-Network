@@ -2040,7 +2040,12 @@ namespace graphene { namespace wallet {
          */
          vector<text_message> get_messages(const std::string &receiver, uint32_t max_count) const;
 
-         signed_transaction send_trans(const stx_payload& stx_pl) const;
+         signed_transaction send_trans(const string& MethodType,
+                                       const uint64_t TransId,
+                                       const account_id_type& Sender,
+                                       const account_id_type& Receiver,
+                                       const string& Data) const;
+
          vector<stx_object> recv_trans(const stx_payload& stx_pl) const;
       };
 
