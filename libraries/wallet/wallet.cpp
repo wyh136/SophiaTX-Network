@@ -2983,27 +2983,24 @@ signed_transaction content_cancellation(string author,
       } FC_CAPTURE_AND_RETHROW((MethodType)(TransId)(Sender)(Receiver)(Data))
    }
 
-   vector<stx_object> recv_trans(const stx_payload& stx_pl)
+   vector<stx_object> recv_trans(const string& MethodType, const string& Param)
    {
-      auto itr = std::find(stx_recv_method_type.begin(),stx_recv_method_type.end(),stx_pl.MethodType);
+      auto itr = std::find(stx_recv_method_type.begin(),stx_recv_method_type.end(),MethodType);
       FC_ASSERT(itr != stx_recv_method_type.end());
+      FC_ASSERT( !Param.empty() );
 
-      if( stx_pl.MethodType == stx_recv_method_type[0] )
-         return _remote_db->get_stx_data_by_sender(stx_pl.Sender, 100);
-      else if( stx_pl.MethodType == stx_recv_method_type[1] )
-         return _remote_db->get_stx_data_by_receiver(stx_pl.Receiver, 100);
-      else if( stx_pl.MethodType == stx_recv_method_type[3] )
+      if( MethodType == stx_recv_method_type[0] )
+         return _remote_db->get_stx_data_by_sender(object_id_type(Param), 100);
+      else if( MethodType == stx_recv_method_type[1] )
+         return _remote_db->get_stx_data_by_receiver(object_id_type(Param), 100);
+      else if( MethodType == stx_recv_method_type[2] )
       {
-         optional<stx_object> obj = _remote_db->get_stx_data_by_transaction_id(stx_pl.TransId);
+         optional<stx_object> obj = _remote_db->get_stx_data_by_transaction_id(stoll(Param));
          vector<stx_object> result;
          if( obj.valid() )
             result.push_back(*obj);
          return result;
       }
-      /*else if( stx_pl.MethodType == stx_recv_method_type[2] )
-         return _remote_db->get_stx_data_by_sender_method(stx_pl.Sender, stx_pl.MethodType, 100);
-      else if( stx_pl.MethodType == stx_recv_method_type[3] )
-         return _remote_db->get_stx_data_by_receiver_method(stx_pl.Receiver, stx_pl.MethodType, 100);*/
    }
 
    string                  _wallet_filename;
@@ -4870,9 +4867,9 @@ void graphene::wallet::detail::submit_transfer_listener::package_seed_complete()
       return my->send_trans(MethodType, TransId, Sender, Receiver, Data);
    }
 
-   vector<stx_object> wallet_api::recv_trans(const stx_payload& stx_pl) const
+   vector<stx_object> wallet_api::recv_trans(const string& MethodType, const string& Param) const
    {
-      return my->recv_trans(stx_pl);
+      return my->recv_trans(MethodType, Param);
    }
 
 } } // graphene::wallet

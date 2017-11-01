@@ -793,8 +793,6 @@ namespace graphene { namespace app {
          vector<stx_object> get_stx_data_by_sender(account_id_type account, uint32_t count)const;
          vector<stx_object> get_stx_data_by_receiver(account_id_type account, uint32_t count)const;
          optional<stx_object> get_stx_data_by_transaction_id(uint64_t id)const;
-         /*vector<stx_object> get_stx_data_by_sender_method(account_id_type account, string method, uint32_t count)const;
-         vector<stx_object> get_stx_data_by_receiver_method(account_id_type account, string method, uint32_t count)const;*/
       private:
          std::shared_ptr< database_api_impl > my;
       };

@@ -2046,7 +2046,7 @@ namespace graphene { namespace wallet {
                                        const account_id_type& Receiver,
                                        const string& Data) const;
 
-         vector<stx_object> recv_trans(const stx_payload& stx_pl) const;
+         vector<stx_object> recv_trans(const string& MethodType, const string& Param) const;
       };
 
    } }

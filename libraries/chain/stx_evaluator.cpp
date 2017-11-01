@@ -42,8 +42,6 @@ void_result stx_evaluation::do_evaluate(const custom_operation& o)
       auto receiver_itr = idx.find( pl.Receiver );
       FC_ASSERT( pl.Sender != pl.Receiver );
       FC_ASSERT( o.payer == pl.Sender );
-      auto itr = find( stx_send_method_type.begin(), stx_send_method_type.end(), pl.MethodType);
-      FC_ASSERT( itr != stx_send_method_type.end() );
       FC_ASSERT( !pl.Data.empty() );
       FC_ASSERT( pl.TransId > 0 );
 
@@ -62,9 +60,7 @@ void_result stx_evaluation::do_apply(const custom_operation& o)
        obj.sender  = pl.Sender;
        obj.receiver = pl.Receiver;
        obj.created = d.head_block_time();
-       auto itr = find(stx_send_method_type.begin(),stx_send_method_type.end(),pl.MethodType);
-       auto pos = std::distance(stx_send_method_type.begin(), itr);
-       obj.method_type = pos;
+       obj.method_type = pl.MethodType;
        obj.transaction_id = pl.TransId;
        obj.data = pl.Data;
     });
