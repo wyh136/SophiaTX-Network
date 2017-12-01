@@ -2040,12 +2040,28 @@ namespace graphene { namespace wallet {
          */
          vector<text_message> get_messages(const std::string &receiver, uint32_t max_count) const;
 
+         /**
+          * @brief Sends a SophiaTX data to receiver.
+          * @param MethodType Operation type
+          * @param TransId Identifier of the operation
+          * @param Sender Name or ID of an account sending the operation
+          * @param Receiver Name or ID of an account receiving the operation
+          * @param data The data
+          * @param broadcast \c true if you wish to broadcast the transaction to the network
+          * @return The signed transaction sending the data to the receiver
+          */
          signed_transaction send_trans(const string& MethodType,
                                        const uint64_t TransId,
                                        const account_id_type& Sender,
                                        const account_id_type& Receiver,
                                        const string& Data) const;
 
+         /**
+          * @brief Receives a SophiaTX data specified by operation type
+          * @param MethodType Type of the operation
+          * @param Param Parameters
+          * @return The list containing SophiaTx data
+          */
          vector<stx_object> recv_trans(const string& MethodType, const string& Param) const;
       };
 

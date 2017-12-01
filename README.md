@@ -1,10 +1,10 @@
 Intro for new developers
 ------------------------
  
-This is a quick introduction to get new developers up to speed on Decent.
+This is a quick introduction to get new developers up to speed on SophiaTX.
 
 
-Building Decent [![Build Status](https://travis-ci.com/DECENTfoundation/DECENT-Network.svg?token=xwFm8bxNLqiJV3NaNYgy&branch=develop)](https://travis-ci.com/DECENTfoundation/DECENT-Network)
+Building SophiaTX
 ---------------
 
 ### Installing prerequisites in Linux
@@ -21,7 +21,7 @@ For Ubuntu 16.04 LTS (for extra actions needed for 14.04 LTS, 14.10, or 16.10 se
      sudo apt-get autoremove
      sudo apt-get install libboost1.60-all-dev
 
-(Ubuntu 14.04 LTS and 14.10 only; and only boost part for Ubuntu 16.04 LTS case) Note, that the default versions of GCC, CMake, and Boost installed in Ubuntu 14.04 LTS or 14.10 are too old and not supported. In order to install and use the supported ones, in addition to the common commands above, execute the following in console (in the same shell session, where you are going to build Decent itself):
+(Ubuntu 14.04 LTS and 14.10 only; and only boost part for Ubuntu 16.04 LTS case) Note, that the default versions of GCC, CMake, and Boost installed in Ubuntu 14.04 LTS or 14.10 are too old and not supported. In order to install and use the supported ones, in addition to the common commands above, execute the following in console (in the same shell session, where you are going to build SophiaTX itself):
 
     # Install GCC 5 and Clang 3.5
      sudo add-apt-repository ppa:ubuntu-toolchain-r/test
@@ -32,8 +32,8 @@ For Ubuntu 16.04 LTS (for extra actions needed for 14.04 LTS, 14.10, or 16.10 se
      export CXX=g++-5
 
     # Download and build CMake 3.7.2
-     mkdir -p ~/dev/DECENTfoundation/DECENT-Network-third-party
-     cd ~/dev/DECENTfoundation/DECENT-Network-third-party
+     mkdir -p ~/dev/SophiaTX/SophiaTX-Network-third-party
+     cd ~/dev/SophiaTX/SophiaTX-Network-third-party
      rm -rf cmake-3.7.2*
      wget https://cmake.org/files/v3.7/cmake-3.7.2.tar.gz
      tar xvf cmake-3.7.2.tar.gz
@@ -48,8 +48,8 @@ For Ubuntu 16.04 LTS (for extra actions needed for 14.04 LTS, 14.10, or 16.10 se
      export PATH=$CMAKE_ROOT/bin:$PATH
 
     # Download and build Boost 1.60.0
-     mkdir -p ~/dev/DECENTfoundation/DECENT-Network-third-party
-     cd ~/dev/DECENTfoundation/DECENT-Network-third-party
+     mkdir -p ~/dev/SophiaTX/SophiaTX-Network-third-party
+     cd ~/dev/SophiaTX/SophiaTX-Network-third-party
      rm -rf boost_1_60_0* boost-1.60.0*
      wget https://sourceforge.net/projects/boost/files/boost/1.60.0/boost_1_60_0.tar.gz
      tar xvf boost_1_60_0.tar.gz
@@ -81,21 +81,21 @@ Then, execute in console:
     $ brew update
     $ brew install automake autoconf libtool cmake berkeley-db boost@1.60 qt5 cryptopp doxygen byacc flex gettext git pbc gmp ipfs openssl readline
 
-### Obtaining the sources, building, and installing Decent in Unix (macOS or Linux)
+### Obtaining the sources, building, and installing SophiaTX in Unix (macOS or Linux)
 
-After all the prerequisites are installed, execute the following commands in console, in order to clone the repo, build, and install/stage Decent:
+After all the prerequisites are installed, execute the following commands in console, in order to clone the repo, build, and install/stage SophiaTX:
 
     # Clone the repo.
-     mkdir -p ~/dev/DECENTfoundation
-     cd ~/dev/DECENTfoundation
-     git clone https://github.com/DECENTfoundation/DECENT-Network.git
-     cd DECENT-Network
+     mkdir -p ~/dev/SophiaTX
+     cd ~/dev/SophiaTX
+     git clone https://github.com/SophiaTX/SophiaTX-Network.git
+     cd SophiaTX-Network
      git submodule update --init --recursive
 
-    # Build and install Decent.
-     mkdir -p ~/dev/DECENTfoundation/DECENT-Network-build
-     cd ~/dev/DECENTfoundation/DECENT-Network-build
-     cmake -G "Unix Makefiles" -D CMAKE_BUILD_TYPE=Debug ~/dev/DECENTfoundation/DECENT-Network
+    # Build and install SophiaTX.
+     mkdir -p ~/dev/SophiaTX/SophiaTX-Network-build
+     cd ~/dev/SophiaTX/SophiaTX-Network-build
+     cmake -G "Unix Makefiles" -D CMAKE_BUILD_TYPE=Debug ~/dev/SophiaTX/SophiaTX-Network
      cmake --build . --target all -- -j -l 3.0
      cmake --build . --target install
 
@@ -104,38 +104,38 @@ After all the prerequisites are installed, execute the following commands in con
 >     $ make -j -l 3.0
 >     $ make install
 
-By this time you should have Decent files installed at `~/dev/DECENTfoundation/DECENT-Network-build/artifacts/prefix` directory. You can specify any other custom install prefix for `cmake` during the initial configuration, for example, by adding `-D CMAKE_INSTALL_PREFIX=~/dev/DECENTfoundation/DECENT-Network-prefix` to the command line.
+By this time you should have SophiaTX files installed at `~/dev/SophiaTX/SophiaTX-Network-build/artifacts/prefix` directory. You can specify any other custom install prefix for `cmake` during the initial configuration, for example, by adding `-D CMAKE_INSTALL_PREFIX=~/dev/SophiaTX/SophiaTX-Network-prefix` to the command line.
 
-You can use any path instead of `~/dev/DECENTfoundation` in the steps above.
+You can use any path instead of `~/dev/SophiaTX` in the steps above.
 
 You can use Xcode, or any other CMake generator, and then, if it is an IDE generator, instead of building and installing via `cmake` in terminal, open the generated project/solution file in the corresponding IDE and perform `ALL_BUILD` and `INSTALL` (or `install`) actions from there.
 
-### Installing prerequisites, obtaining the sources, building, and installing Decent in Windows
+### Installing prerequisites, obtaining the sources, building, and installing SophiaTX in Windows
 
 TODO
 
 
-Starting Decent
+Starting SophiaTX
 ---------------
 
-> In the commands below, change `~/dev/DECENTfoundation/DECENT-Network-build/artifacts/prefix` to `~/dev/DECENTfoundation/DECENT-Network-prefix` or to any other install location, that you specified during initial configuration.
+> In the commands below, change `~/dev/SophiaTX/SophiaTX-Network-build/artifacts/prefix` to `~/dev/SophiaTX/SophiaTX-Network-prefix` or to any other install location, that you specified during initial configuration.
 
 On first run `decentd` will create `.decent` in the home directory, if doesn't exist already.
 
-    $ ~/dev/DECENTfoundation/DECENT-Network-build/artifacts/prefix/bin/decentd
+    $ ~/dev/SophiaTX/SophiaTX-Network-build/artifacts/prefix/bin/decentd
 
 Optionally, now press Ctrl-C to stop `decentd`. You can edit configuration in `~/.decent/data/decentd/config.ini`.
 
-Then, run the decent daemon again:
+Then, run the SophiaTX daemon again:
 
-    $ ~/dev/DECENTfoundation/DECENT-Network-build/artifacts/prefix/bin/decentd 
+    $ ~/dev/SophiaTX/SophiaTX-Network-build/artifacts/prefix/bin/decentd 
     
-This will launch the decent daemon node with the default genesis. 
+This will launch the SophiaTX daemon node with the default genesis. 
 
 Then, in a separate console, start the command-line wallet by executing:
 
-    $ cd ~/dev/DECENTfoundation/DECENT-Network-working-dir
-    $ ~/dev/DECENTfoundation/DECENT-Network-build/artifacts/prefix/bin/cli_wallet
+    $ cd ~/dev/SophiaTX/SophiaTX-Network-working-dir
+    $ ~/dev/SophiaTX/SophiaTX-Network-build/artifacts/prefix/bin/cli_wallet
 
 To set your initial password to `mypassword`, execute:
 
@@ -147,14 +147,14 @@ To import your account keys, execute:
     >>> import_key [name] [private_wif_key]
 
 
-Decent daemon
+SophiaTX daemon
 --------------
 
-The role of the decent daemon is to broadcast transactions, download blocks, and optionally sign them.
+The role of the SophiaTX daemon is to broadcast transactions, download blocks, and optionally sign them.
 
-    $ ~/dev/DECENTfoundation/DECENT-Network-build/artifacts/prefix/bin/decentd --rpc-endpoint 127.0.0.1:8090 --enable-stale-production -w '"1.4.0"' 
+    $ ~/dev/SophiaTX/SophiaTX-Network-build/artifacts/prefix/bin/decentd --rpc-endpoint 127.0.0.1:8090 --enable-stale-production -w '"1.4.0"' 
 
-Testing Decent
+Testing SophiaTX
 --------------
 
 Seeder plugin is responsible for automatically announce seeder's capablity, downloading content, seeding it and distributing keys. In order to enable it follow these steps:
@@ -162,7 +162,7 @@ Seeder plugin is responsible for automatically announce seeder's capablity, down
 
         generate_el_gamal_keys
 
-2. Add parameters to the decent daemon
+2. Add parameters to the SophiaTX daemon
 
         --seeder [account-id] --seeder-private-key [private_wif_key] --content-private-key [el_gamal_private_key] --packages-path [path] --seeding-price [price] --free-space [free-space]
     
@@ -193,6 +193,23 @@ API 0 is accessible using regular JSON-RPC:
 
     $ curl --data '{"jsonrpc": "2.0", "method": "get_accounts", "params": [["1.2.0"]], "id": 1}' http://127.0.0.1:8090/rpc
 
+
+SophiaTX API calls
+------------------
+
+We provide several different API's.  Each API has its own ID.
+When running `decentd`, initially two API's are available:
+API 0 provides read-only access to the database, while API 1 is
+used to login and gain access to additional, restricted API's.
+
+Here is an example using `wscat` package from `npm` for websockets:
+
+    $ npm install -g wscat
+    $ wscat -c ws://127.0.0.1:8090
+    > {"id":1, "method":"call", "params":[0,"get_accounts",[["1.2.0"]]]}
+    < {"id":1,"result":[{"id":"1.2.0","annotations":[],"membership_expiration_date":"1969-12-31T23:59:59","registrar":"1.2.0","referrer":"1.2.0","lifetime_referrer":"1.2.0","network_fee_percentage":2000,"lifetime_referrer_fee_percentage":8000,"referrer_rewards_percentage":0,"name":"committee-account","owner":{"weight_threshold":1,"account_auths":[],"key_auths":[],"address_auths":[]},"active":{"weight_threshold":6,"account_auths":[["1.2.5",1],["1.2.6",1],["1.2.7",1],["1.2.8",1],["1.2.9",1],["1.2.10",1],["1.2.11",1],["1.2.12",1],["1.2.13",1],["1.2.14",1]],"key_auths":[],"address_auths":[]},"options":{"memo_key":"GPH1111111111111111111111111111111114T1Anm","voting_account":"1.2.0","num_miner":0,"num_committee":0,"votes":[],"extensions":[]},"statistics":"2.7.0","whitelisting_accounts":[],"blacklisting_accounts":[]}]}
+
+We can do the
 
 Accessing restricted API's
 --------------------------
