@@ -2047,7 +2047,6 @@ namespace graphene { namespace wallet {
           * @param Sender Name or ID of an account sending the operation
           * @param Receiver Name or ID of an account receiving the operation
           * @param data The data
-          * @param broadcast \c true if you wish to broadcast the transaction to the network
           * @return The signed transaction sending the data to the receiver
           */
          signed_transaction send_trans(const string& MethodType,

@@ -121,11 +121,11 @@ int main(int argc, char** argv) {
    stx_eval->_chain_db = node->chain_database();
    fc::oexception unhandled_exception;
    try {
-      bpo::options_description app_options("DECENT Daemon");
-      bpo::options_description cfg_options("DECENT Daemon");
+      bpo::options_description app_options("SophiaTX Daemon");
+      bpo::options_description cfg_options("SophiaTX Daemon");
       app_options.add_options()
             ("help,h", "Print this help message and exit.")
-       ("data-dir,d", bpo::value<boost::filesystem::path>()->default_value( utilities::decent_path_finder::instance().get_decent_data() / "decentd"), "Directory containing databases, configuration file, etc.")
+       ("data-dir,d", bpo::value<boost::filesystem::path>()->default_value( utilities::decent_path_finder::instance().get_decent_data() / "sophiatxd"), "Directory containing databases, configuration file, etc.")
             ;
 
       bpo::variables_map options;

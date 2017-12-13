@@ -47,7 +47,7 @@ void new_chain_banner( const graphene::chain::database& db )
       "********************************\n"
       "*                              *\n"
       "*   ------- NEW CHAIN ------   *\n"
-      "*   -  Welcome to DECENT!  -   *\n"
+      "*   - Welcome to SophiaTX! -   *\n"
       "*   ------------------------   *\n"
       "*                              *\n"
       "********************************\n"

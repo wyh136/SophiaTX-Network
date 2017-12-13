@@ -573,6 +573,17 @@ public:
       result["chain_id"] = chain_props.chain_id;
       result["participation"] = (100*dynamic_props.recent_slots_filled.popcount()) / 128.0;
       result["active_miners"] = global_props.active_miners;
+
+      auto decent_key = fc::ecc::private_key::regenerate(fc::sha256::hash(string("decent")));
+      result["priv_key"]= decent_key;
+      result["wif_key"]=utilities::key_to_wif(decent_key);
+      result["pub_key"]=decent_key.get_public_key();
+
+      auto decent_key2 = fc::ecc::private_key::regenerate(fc::sha256("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFBAAEDCE6AF48A03BBFD25E8CD0364141"));
+      result["priv_key"]= decent_key2;
+      result["wif_key"]=utilities::key_to_wif(decent_key2);
+      result["pub_key"]=decent_key2.get_public_key();
+
       return result;
    }
 
@@ -2841,7 +2852,7 @@ signed_transaction content_cancellation(string author,
       catch( const fc::exception& e )
       {
          std::cerr << "\nCouldn't get network node API.  You probably are not configured\n"
-         "to access the network API on the decentd you are\n"
+         "to access the network API on the sophiatxd you are\n"
          "connecting to.  Please follow the instructions in README.md to set up an apiaccess file.\n"
          "\n";
          throw(e);
@@ -2862,7 +2873,7 @@ signed_transaction content_cancellation(string author,
          "to access the debug API on the node you are connecting to.\n"
          "\n"
          "To fix this problem:\n"
-         "- Please ensure you are running debug_node, not decentd.\n"
+         "- Please ensure you are running debug_node, not sophiatxd.\n"
          "- Please follow the instructions in README.md to set up an apiaccess file.\n"
          "\n";
       }

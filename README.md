@@ -120,15 +120,15 @@ Starting SophiaTX
 
 > In the commands below, change `~/dev/SophiaTX/SophiaTX-Network-build/artifacts/prefix` to `~/dev/SophiaTX/SophiaTX-Network-prefix` or to any other install location, that you specified during initial configuration.
 
-On first run `decentd` will create `.decent` in the home directory, if doesn't exist already.
+On first run `sophiatxd` will create `.decent` in the home directory, if doesn't exist already.
 
-    $ ~/dev/SophiaTX/SophiaTX-Network-build/artifacts/prefix/bin/decentd
+    $ ~/dev/SophiaTX/SophiaTX-Network-build/artifacts/prefix/bin/sophiatxd
 
-Optionally, now press Ctrl-C to stop `decentd`. You can edit configuration in `~/.decent/data/decentd/config.ini`.
+Optionally, now press Ctrl-C to stop `sophiatxd`. You can edit configuration in `~/.decent/data/sophiatxd/config.ini`.
 
 Then, run the SophiaTX daemon again:
 
-    $ ~/dev/SophiaTX/SophiaTX-Network-build/artifacts/prefix/bin/decentd 
+    $ ~/dev/SophiaTX/SophiaTX-Network-build/artifacts/prefix/bin/sophiatxd 
     
 This will launch the SophiaTX daemon node with the default genesis. 
 
@@ -147,12 +147,29 @@ To import your account keys, execute:
     >>> import_key [name] [private_wif_key]
 
 
+SophiaTX transactions
+---------------------
+
+At this time, we provide two general methods to operate with SophiaTX data.
+The first method is used to send data to a receiver.
+        
+    signed_transaction send_trans(string MethodType, uint64_t TransId, account_id_type Sender, account_id_type Receiver, string Data)
+                                  
+   where `MethodType` is operation type, `TransId` identifier of the operation, `Sender` name or ID of an account sending the operation, `Receiver` name or ID of an account receiving the operation, and `Data` actual data to send.
+
+The second method is used to obtain SophiaTX data specified by operation type.
+
+    vector<stx_object> recv_trans(string MethodType, string Param)
+    
+   where `MethodType` defines operation type and `Param` are necessary parameters. Parameters depend on operation type. This method returns requested data from the blockchain.
+
+
 SophiaTX daemon
 --------------
 
 The role of the SophiaTX daemon is to broadcast transactions, download blocks, and optionally sign them.
 
-    $ ~/dev/SophiaTX/SophiaTX-Network-build/artifacts/prefix/bin/decentd --rpc-endpoint 127.0.0.1:8090 --enable-stale-production -w '"1.4.0"' 
+    $ ~/dev/SophiaTX/SophiaTX-Network-build/artifacts/prefix/bin/sophiatxd --rpc-endpoint 127.0.0.1:8090 --enable-stale-production -w '"1.4.0"' 
 
 Testing SophiaTX
 --------------
@@ -173,7 +190,7 @@ Using the API
 -------------
 
 We provide several different API's.  Each API has its own ID.
-When running `decentd`, initially two API's are available:
+When running `sophiatxd`, initially two API's are available:
 API 0 provides read-only access to the database, while API 1 is
 used to login and gain access to additional, restricted API's.
 
@@ -198,7 +215,7 @@ SophiaTX API calls
 ------------------
 
 We provide several different API's.  Each API has its own ID.
-When running `decentd`, initially two API's are available:
+When running `sophiatxd`, initially two API's are available:
 API 0 provides read-only access to the database, while API 1 is
 used to login and gain access to additional, restricted API's.
 
@@ -317,7 +334,7 @@ Questions
     to pass the username/password to the `cli_wallet` on the command line or in a config file.
 
     It's set up this way so that the default configuration is secure even if the RPC port is
-    publicly accessible.  It's fine if your `decentd` allows the general public to query
+    publicly accessible.  It's fine if your `sophiatxd` allows the general public to query
     the database or broadcast transactions (in fact, this is how the hosted web UI works).  It's
     less fine if your `decent` allows the general public to control which p2p nodes it's
     connecting to.  Therefore the API to add p2p connections needs to be set up with proper access

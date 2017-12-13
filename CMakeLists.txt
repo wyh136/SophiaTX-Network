@@ -1,10 +1,10 @@
 cmake_minimum_required( VERSION 2.8.12 FATAL_ERROR )
 
-project( Decent )
+project( SophiaTX )
 
-set( BLOCKCHAIN_NAME "Decent" )
+set( BLOCKCHAIN_NAME "SophiaTX" )
 
-set( CLI_CLIENT_EXECUTABLE_NAME "decent_client" )
+set( CLI_CLIENT_EXECUTABLE_NAME "sophiatx_client" )
 set( GUI_CLIENT_EXECUTABLE_NAME "decent" )
 set( CUSTOM_URL_SCHEME "gcs" )
 set( INSTALLER_APP_ID "68ad7005-8eee-49c9-95ce-9eed97e5b347" )

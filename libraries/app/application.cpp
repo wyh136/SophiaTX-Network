@@ -80,9 +80,9 @@ namespace detail {
 
    genesis_state_type create_example_genesis() {
       //TODO_DECENT - replace with super trooper private key
-      //auto decent_key = fc::ecc::private_key::regenerate(fc::sha256::hash(string("decent")));
-      //dlog("Allocating all stake to ${key}", ("key", utilities::key_to_wif(decent_key)));
-      public_key_type decent_pub_key (std::string("DCT82MTCQVa9TDFmz3ZwaLzsFAmCLoJzrtFugpF72vsbuE1CpCwKy"));
+      auto sophiatx_key = fc::ecc::private_key::regenerate(fc::sha256::hash(string("SophiaTX")));
+      dlog("Allocating all stake to ${key}", ("key", utilities::key_to_wif(sophiatx_key)));
+      public_key_type sophiatx_pub_key = sophiatx_key.get_public_key();
 
       genesis_state_type initial_state;
       initial_state.initial_parameters.current_fees = fee_schedule::get_default();//->set_all_fees(GRAPHENE_BLOCKCHAIN_PRECISION);
@@ -94,16 +94,16 @@ namespace detail {
       {
          auto name = "init"+fc::to_string(i);
          initial_state.initial_accounts.emplace_back(name,
-                                                     decent_pub_key,
-                                                     decent_pub_key);
-         initial_state.initial_miner_candidates.push_back({name, decent_pub_key});
+                                                     sophiatx_pub_key,
+                                                     sophiatx_pub_key);
+         initial_state.initial_miner_candidates.push_back({name, sophiatx_pub_key});
       }
 
-      initial_state.initial_accounts.emplace_back("decent", decent_pub_key);
-      initial_state.initial_balances.push_back({"decent",
+      initial_state.initial_accounts.emplace_back("sophiatx", sophiatx_pub_key);
+      initial_state.initial_balances.push_back({"sophiatx",
                                                 GRAPHENE_SYMBOL,
                                                 GRAPHENE_INITIAL_SHARE_SUPPLY});
-      initial_state.initial_chain_id = fc::sha256::hash( "DECENT" );
+      initial_state.initial_chain_id = fc::sha256::hash( "SophiaTX" );
 
       return initial_state;
    }
@@ -139,14 +139,7 @@ namespace detail {
             vector<string> seeds = { 
                "seed1.decentgo.com:40000",
                "seed2.decentgo.com:40000", 
-               "seed3.decentgo.com:40000",
-               "decent.roelandp.nl:40000",       // # roelandp (DE)
-               "5.9.18.213:40000",           // # pfunk (DE)
-               "decent.rondonson.com:40000",     // # rondonson (DE)
-               "52.10.121.79:40000",             // # liberosist (US) 
-               "decent.agoric.systems:46023",    // # agoric.systems / robrigo (BR)
-               "45.124.64.161:40000",            // # nuevax (HK)
-               "66.70.188.105:40000"             // # decentspace (CA)
+               "seed3.decentgo.com:40000"
             };
             for( const string& endpoint_string : seeds ){
                std::vector<fc::ip::endpoint> endpoints;

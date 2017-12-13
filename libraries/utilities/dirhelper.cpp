@@ -33,7 +33,7 @@ decent_path_finder::decent_path_finder() {
    
    const char* decent_home = getenv("DECENT_HOME");
    if (decent_home == NULL) {
-      _decent_home = _user_home / ".decent";
+      _decent_home = _user_home / ".sophiatx";
    } else {
       _decent_home = decent_home;
    }
