@@ -574,16 +574,6 @@ public:
       result["participation"] = (100*dynamic_props.recent_slots_filled.popcount()) / 128.0;
       result["active_miners"] = global_props.active_miners;
 
-      auto decent_key = fc::ecc::private_key::regenerate(fc::sha256::hash(string("decent")));
-      result["priv_key"]= decent_key;
-      result["wif_key"]=utilities::key_to_wif(decent_key);
-      result["pub_key"]=decent_key.get_public_key();
-
-      auto decent_key2 = fc::ecc::private_key::regenerate(fc::sha256("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFBAAEDCE6AF48A03BBFD25E8CD0364141"));
-      result["priv_key"]= decent_key2;
-      result["wif_key"]=utilities::key_to_wif(decent_key2);
-      result["pub_key"]=decent_key2.get_public_key();
-
       return result;
    }
 
