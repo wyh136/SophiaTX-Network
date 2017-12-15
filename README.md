@@ -120,11 +120,11 @@ Starting SophiaTX
 
 > In the commands below, change `~/dev/SophiaTX/SophiaTX-Network-build/artifacts/prefix` to `~/dev/SophiaTX/SophiaTX-Network-prefix` or to any other install location, that you specified during initial configuration.
 
-On first run `sophiatxd` will create `.decent` in the home directory, if doesn't exist already.
+On first run `sophiatxd` will create `.sophiatx` in the home directory, if doesn't exist already.
 
     $ ~/dev/SophiaTX/SophiaTX-Network-build/artifacts/prefix/bin/sophiatxd
 
-Optionally, now press Ctrl-C to stop `sophiatxd`. You can edit configuration in `~/.decent/data/sophiatxd/config.ini`.
+Optionally, now press Ctrl-C to stop `sophiatxd`. You can edit configuration in `~/.sophiatx/data/sophiatxd/config.ini`.
 
 Then, run the SophiaTX daemon again:
 
@@ -336,6 +336,6 @@ Questions
     It's set up this way so that the default configuration is secure even if the RPC port is
     publicly accessible.  It's fine if your `sophiatxd` allows the general public to query
     the database or broadcast transactions (in fact, this is how the hosted web UI works).  It's
-    less fine if your `decent` allows the general public to control which p2p nodes it's
+    less fine if your `sophiatx` allows the general public to control which p2p nodes it's
     connecting to.  Therefore the API to add p2p connections needs to be set up with proper access
     controls.
