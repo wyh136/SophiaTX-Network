@@ -2431,7 +2431,8 @@ namespace
          auto itr = idx.find(id);
          if( itr != idx.end() )
             return *itr;
-         else optional<stx_object>();
+         else
+            return optional<stx_object>();
 
       }FC_CAPTURE_AND_RETHROW( (id) );
    }
