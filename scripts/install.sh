@@ -11,8 +11,8 @@ export CC=gcc-5
 export CXX=g++-5
 
 # Download and build CMake 3.7.2
-mkdir -p ~/dev/DECENTfoundation/DECENT-Network-third-party
-cd ~/dev/DECENTfoundation/DECENT-Network-third-party
+mkdir -p ~/dev/SophiaTX-Network/SophiaTX-Network-third-party
+cd ~/dev/DSophiaTX-Network/SophiaTX-Network-third-party
 rm -rf cmake-3.7.2*
 wget https://cmake.org/files/v3.7/cmake-3.7.2.tar.gz
 tar xvf cmake-3.7.2.tar.gz
@@ -27,8 +27,8 @@ rm -rf cmake-3.7.2 cmake-3.7.2.tar.gz
 export PATH=$CMAKE_ROOT/bin:$PATH
 
 # Download and build Boost 1.60.0
-mkdir -p ~/dev/DECENTfoundation/DECENT-Network-third-party
-cd ~/dev/DECENTfoundation/DECENT-Network-third-party
+mkdir -p ~/dev/SophiaTX-Network/SophiaTX-Network-third-party
+cd ~/dev/SophiaTX-Network/SophiaTX-Network-third-party
 rm -rf boost_1_60_0* boost-1.60.0*
 wget https://sourceforge.net/projects/boost/files/boost/1.60.0/boost_1_60_0.tar.gz
 tar xvf boost_1_60_0.tar.gz
@@ -41,22 +41,22 @@ cd ..
 rm -rf boost_1_60_0 boost_1_60_0.tar.gz
 
 # Clone the repo.
- mkdir -p ~/dev/DECENTfoundation
- cd ~/dev/DECENTfoundation
- git clone https://github.com/DECENTfoundation/DECENT-Network.git
- cd DECENT-Network
+ mkdir -p ~/dev/SophiaTX-Network
+ cd ~/dev/SophiaTX-Network
+ git clone https://github.com/SophiaTX-Network/SophiaTX-Network.git
+ cd SophiaTX-Network
  git submodule update --init --recursive
 
 # Build and install Decent.
- mkdir -p ~/dev/DECENTfoundation/DECENT-Network-build
- cd ~/dev/DECENTfoundation/DECENT-Network-build
- cmake -G "Unix Makefiles" -D CMAKE_BUILD_TYPE=Debug ~/dev/DECENTfoundation/DECENT-Network
+ mkdir -p ~/dev/SophiaTX-Network/SophiaTX-Network-build
+ cd ~/dev/SophiaTX-Network/SophiaTX-Network-build
+ cmake -G "Unix Makefiles" -D CMAKE_BUILD_TYPE=Debug ~/dev/SophiaTX-Network/SophiaTX-Network
  cmake --build . --target all -- -j -l 3.0
  cmake --build . --target install
  
-mkdir ~/decent
-cp ~/dev/DECENTfoundation/DECENT-Network-build/artifacts/prefix/bin/* ~/decent/
-cd ~/decent
+mkdir ~/sophiatx
+cp ~/dev/SophiaTX-Network/SophiaTX-Network-build/artifacts/prefix/bin/* ~/sophiatx/
+cd ~/sophiatx
 ls
 echo "all done!"
 
