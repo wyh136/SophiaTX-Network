@@ -790,9 +790,9 @@ namespace graphene { namespace app {
 
          vector<database::votes_gained> get_actual_votes() const;
 
-         vector<stx_object> get_stx_data_by_sender(account_id_type account, uint32_t count)const;
-         vector<stx_object> get_stx_data_by_receiver(account_id_type account, uint32_t count)const;
+         vector<stx_object> get_stx_data( const string& MethodType, const account_id_type& account, uint32_t count)const;
          optional<stx_object> get_stx_data_by_transaction_id(uint64_t id)const;
+         vector<stx_object> get_stx_data_objrange( const string& MethodType, const account_id_type& account, const stx_id_type& start, uint32_t count)const;
       private:
          std::shared_ptr< database_api_impl > my;
       };
@@ -907,9 +907,7 @@ FC_API(graphene::app::database_api,
           (get_actual_votes)
 
           // STX
-          (get_stx_data_by_sender)
-          (get_stx_data_by_receiver)
-          /*(get_stx_data_by_sender_method)
-          (get_stx_data_by_receiver_method)*/
+          (get_stx_data)
+          (get_stx_data_objrange)
           (get_stx_data_by_transaction_id)
 )

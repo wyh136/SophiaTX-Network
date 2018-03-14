@@ -2062,6 +2062,20 @@ namespace graphene { namespace wallet {
           * @return The list containing SophiaTx data
           */
          vector<stx_object> recv_trans(const string& MethodType, const string& Param) const;
+
+         /**
+          * @brief Receives a SophiaTX data specified by operation type and range
+          * @param MethodType Type of the operation
+          * @param Param Parameters
+          * @param start Stx_id_type to start searching from
+          * @param end
+          * @return The list containing SophiaTx data
+          */
+         vector<stx_object> recv_trans_objrange(const string& MethodType,
+                                                const string& Param,
+                                                const string& start,
+                                                uint32_t count) const;
+
       };
 
    } }
@@ -2277,4 +2291,5 @@ FC_API( graphene::wallet::wallet_api,
            (get_messages)
            (send_trans)
            (recv_trans)
+           (recv_trans_objrange)
 )

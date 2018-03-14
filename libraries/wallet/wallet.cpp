@@ -2964,9 +2964,6 @@ signed_transaction content_cancellation(string author,
          stx_pl.TransId = TransId;
          stx_pl.Data = Data;
 
-         //auto itr = std::find(stx_send_method_type.begin(),stx_send_method_type.end(),stx_pl.MethodType);
-         //FC_ASSERT(itr != stx_send_method_type.end());
-
          custom_operation cust_op;
 
          cust_op.id = graphene::chain::custom_operation_subtype_stx_invoice;
@@ -2990,11 +2987,7 @@ signed_transaction content_cancellation(string author,
       FC_ASSERT(itr != stx_recv_method_type.end());
       FC_ASSERT( !Param.empty() );
 
-      if( MethodType == stx_recv_method_type[0] )
-         return _remote_db->get_stx_data_by_sender(object_id_type(Param), 100);
-      else if( MethodType == stx_recv_method_type[1] )
-         return _remote_db->get_stx_data_by_receiver(object_id_type(Param), 100);
-      else if( MethodType == stx_recv_method_type[2] )
+      if( MethodType == stx_recv_method_type[4] )
       {
          optional<stx_object> obj = _remote_db->get_stx_data_by_transaction_id(stoll(Param));
          vector<stx_object> result;
@@ -3002,6 +2995,20 @@ signed_transaction content_cancellation(string author,
             result.push_back(*obj);
          return result;
       }
+      else
+         return _remote_db->get_stx_data( MethodType, object_id_type(Param), 100);
+   }
+
+   vector<stx_object> recv_trans_objrange(const string& MethodType,
+                                          const string& Param,
+                                          const string& start,
+                                          uint32_t count)
+   {
+      auto itr = std::find(stx_recv_method_type.begin(),stx_recv_method_type.end(),MethodType);
+      FC_ASSERT(itr != stx_recv_method_type.end(), "Unknown method type: ${mt}",("mt",MethodType));
+      FC_ASSERT( !Param.empty() );
+
+      return _remote_db->get_stx_data_objrange( MethodType, object_id_type(Param), object_id_type(start), count);
    }
 
    string                  _wallet_filename;
@@ -4871,6 +4878,14 @@ void graphene::wallet::detail::submit_transfer_listener::package_seed_complete()
    vector<stx_object> wallet_api::recv_trans(const string& MethodType, const string& Param) const
    {
       return my->recv_trans(MethodType, Param);
+   }
+
+   vector<stx_object> wallet_api::recv_trans_objrange(const string& MethodType,
+                                                      const string& Param,
+                                                      const string& start,
+                                                      uint32_t count) const
+   {
+      return my->recv_trans_objrange( MethodType, Param, start, count);
    }
 
 } } // graphene::wallet

@@ -192,12 +192,9 @@ namespace graphene { namespace app {
       optional<subscription_object> get_subscription( const subscription_id_type& sid) const;
 
       // STX
-      vector<stx_object> get_stx_data_by_sender(account_id_type account, uint32_t count)const;
-      vector<stx_object> get_stx_data_by_receiver(account_id_type account, uint32_t count)const;
+      vector<stx_object> get_stx_data( const string& MethodType,  const account_id_type& account, uint32_t count)const;
       optional<stx_object> get_stx_data_by_transaction_id(uint64_t id)const;
-      /*vector<stx_object> get_stx_data_by_sender_method(account_id_type account, string method, uint32_t count)const;
-      vector<stx_object> get_stx_data_by_receiver_method(account_id_type account, string method, uint32_t count)const;*/
-
+      vector<stx_object> get_stx_data_objrange( const string& MethodType, const account_id_type& account, const stx_id_type& start, uint32_t count )const;
 
       //private:
       template<typename T>
@@ -2367,61 +2364,112 @@ namespace
    //                                                                  //
    //////////////////////////////////////////////////////////////////////
 
-   vector<stx_object> database_api::get_stx_data_by_sender(account_id_type account, uint32_t count)const
+   namespace {
+
+      template <typename sort_tag, bool is_ascending>
+      void get_stx_data_template( graphene::chain::database& db,
+                                  const account_id_type& account,
+                                  uint32_t count,
+                                  vector<stx_object>& result)
+      {
+         const auto& range = db.get_index_type<stx_index>().indices().get<sort_tag>().equal_range(account);
+         result.reserve(count);
+         auto itr_begin = return_one<is_ascending>::choose(range.first, boost::reverse_iterator<decltype(range.second)>(range.second));
+         auto itr_end = return_one<is_ascending>::choose(range.second, boost::reverse_iterator<decltype(range.first)>(range.first));
+
+         while( count-- && itr_begin != itr_end )
+         {
+            result.push_back( *itr_begin );
+            itr_begin++;
+         }
+      }
+
+      template <typename sort_tag, bool is_ascending>
+      void get_stx_data_objrange_template( graphene::chain::database& db,
+                                           const account_id_type& account,
+                                           const stx_id_type& start,
+                                           uint32_t count,
+                                           vector<stx_object>& result)
+      {
+         const auto& idx = db.get_index_type<stx_index>().indices().get<sort_tag>();
+         auto itr_begin = idx.lower_bound(account);
+         auto itr_end = idx.upper_bound(account);
+         auto itr_start = idx.find(boost::make_tuple(account, start));
+         FC_ASSERT( itr_begin != itr_end && itr_start != idx.end() );
+
+         if( !is_ascending )
+            itr_start++;
+
+         result.reserve(count);
+         auto itr_begin_final = return_one<is_ascending>::choose(itr_start, boost::reverse_iterator<decltype(itr_start)>(itr_start));
+         auto itr_end_final = return_one<is_ascending>::choose(itr_end, boost::reverse_iterator<decltype(itr_begin)>(itr_begin));
+
+         while( count-- && itr_begin_final != itr_end_final )
+         {
+            result.push_back( *itr_begin_final );
+            itr_begin_final++;
+         }
+      }
+
+      }
+
+   vector<stx_object> database_api::get_stx_data( const string& MethodType, const account_id_type& account, uint32_t count)const
    {
-      return my->get_stx_data_by_sender(account, count);
+      return my->get_stx_data( MethodType, account, count);
    }
 
-   vector<stx_object> database_api_impl::get_stx_data_by_sender(account_id_type account, uint32_t count)const
+   vector<stx_object> database_api_impl::get_stx_data(const string& MethodType, const account_id_type& account, uint32_t count)const
    {
       try{
          FC_ASSERT( count <= 100 );
-         uint32_t i = count;
-         const auto& range = _db.get_index_type<stx_index>().indices().get<by_sender>().equal_range(account);
          vector<stx_object> result;
-         result.reserve(count);
-         auto itr = range.first;
-
-         while(i-- && itr != range.second)
-         {
-            result.emplace_back(*itr);
-            ++itr;
-         }
+         if( MethodType == stx_recv_method_type[0] )
+            get_stx_data_template< by_sender_id, false>( _db, account, count, result);
+         else if( MethodType == stx_recv_method_type[1] )
+            get_stx_data_template< by_receiver_id, false>( _db, account, count, result);
+         else if( MethodType == stx_recv_method_type[2] )
+            get_stx_data_template< by_sender_id, true>( _db, account, count, result);
+         else if( MethodType == stx_recv_method_type[3] )
+            get_stx_data_template< by_receiver_id, true>( _db, account, count, result);
 
          return result;
 
-      }FC_CAPTURE_AND_RETHROW( (account)(count) );
-   }
-
-   vector<stx_object> database_api::get_stx_data_by_receiver(account_id_type account, uint32_t count)const
-   {
-      return my->get_stx_data_by_receiver(account, count);
-   }
-
-   vector<stx_object> database_api_impl::get_stx_data_by_receiver(account_id_type account, uint32_t count)const
-   {
-      try{
-         FC_ASSERT( count <= 100 );
-         uint32_t i = count;
-         const auto& range = _db.get_index_type<stx_index>().indices().get<by_receiver>().equal_range(account);
-         vector<stx_object> result;
-         result.reserve(count);
-         auto itr = range.first;
-
-         while(i-- && itr != range.second)
-         {
-            result.emplace_back(*itr);
-            ++itr;
-         }
-
-         return result;
-
-      }FC_CAPTURE_AND_RETHROW( (account)(count) );
+      }FC_CAPTURE_AND_RETHROW( (MethodType)(account)(count) );
    }
 
    optional<stx_object> database_api::get_stx_data_by_transaction_id(uint64_t id)const
    {
       return my->get_stx_data_by_transaction_id(id);
+   }
+
+   vector<stx_object> database_api::get_stx_data_objrange( const string& MethodType,
+                                                           const account_id_type& account,
+                                                           const stx_id_type& start,
+                                                           uint32_t count )const
+   {
+      return my->get_stx_data_objrange( MethodType, account, start, count );
+   }
+
+   vector<stx_object> database_api_impl::get_stx_data_objrange( const string& MethodType,
+                                                                const account_id_type& account,
+                                                                const stx_id_type& start,
+                                                                uint32_t count )const
+   {
+      try{
+         FC_ASSERT( count <= 100 );
+         vector<stx_object> result;
+         if( MethodType == stx_recv_method_type[0] )
+            get_stx_data_objrange_template< by_sender_id, false>( _db, account, start, count, result);
+         else if( MethodType == stx_recv_method_type[1] )
+            get_stx_data_objrange_template< by_receiver_id, false>( _db, account, start, count, result);
+         else if( MethodType == stx_recv_method_type[2] )
+            get_stx_data_objrange_template< by_sender_id, true>( _db, account, start, count, result);
+         else if( MethodType == stx_recv_method_type[3] )
+            get_stx_data_objrange_template< by_receiver_id, true>( _db, account, start, count, result);
+
+         return result;
+
+      }FC_CAPTURE_AND_RETHROW( (MethodType)(account)(start)(count) );
    }
 
    optional<stx_object> database_api_impl::get_stx_data_by_transaction_id(uint64_t id)const
@@ -2436,70 +2484,6 @@ namespace
 
       }FC_CAPTURE_AND_RETHROW( (id) );
    }
-
-   /*vector<stx_object> database_api::get_stx_data_by_sender_method(account_id_type account, string method, uint32_t count)const
-   {
-      return my->get_stx_data_by_sender_method( account, method, count );
-   }
-
-   vector<stx_object> database_api_impl::get_stx_data_by_sender_method(account_id_type account, string method, uint32_t count)const
-   {
-      try
-      {
-         FC_ASSERT( count <= 100 );
-         uint32_t i = count;
-
-         auto itr_m = find(stx_send_method_type.begin(),stx_send_method_type.end(),method);
-         FC_ASSERT( itr_m != stx_send_method_type.end() );
-         auto pos = std::distance(stx_send_method_type.begin(), itr_m);
-
-         auto range = _db.get_index_type<stx_index>().indices().get<by_sender_method_type>().equal_range( std::make_tuple( account, pos ) );
-         vector<stx_object> result;
-         result.reserve(distance(range.first, range.second));
-         auto itr = range.first;
-
-         while(i-- && itr != range.second)
-         {
-            result.emplace_back(*itr);
-            ++itr;
-         }
-
-         return result;
-      }
-      FC_CAPTURE_AND_RETHROW( (account)(method)(count) );
-   }
-
-      vector<stx_object> database_api::get_stx_data_by_receiver_method(account_id_type account, string method, uint32_t count)const
-      {
-         return my->get_stx_data_by_receiver_method( account, method, count );
-      }
-
-      vector<stx_object> database_api_impl::get_stx_data_by_receiver_method(account_id_type account, string method, uint32_t count)const
-      {
-         try
-         {
-            FC_ASSERT( count <= 100 );
-            uint32_t i = count;
-            auto itr_m = find(stx_send_method_type.begin(),stx_send_method_type.end(),method);
-            FC_ASSERT( itr_m != stx_send_method_type.end() );
-            auto pos = std::distance(stx_send_method_type.begin(), itr_m);
-
-            auto range = _db.get_index_type<stx_index>().indices().get<by_receiver_method_type>().equal_range( std::make_tuple( account, pos ) );
-            vector<stx_object> result;
-            result.reserve(distance(range.first, range.second));
-            auto itr = range.first;
-
-            while(i-- && itr != range.second)
-            {
-               result.emplace_back(*itr);
-               ++itr;
-            }
-
-            return result;
-         }
-         FC_CAPTURE_AND_RETHROW( (account)(method)(count) );
-      }*/
-
 
 
 

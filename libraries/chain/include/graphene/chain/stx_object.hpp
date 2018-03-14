@@ -28,22 +28,36 @@ class stx_object : public graphene::db::abstract_object< stx_object >
       struct by_sender;
       struct by_receiver;
       struct by_transaction_id;
+      struct by_sender_id;
+      struct by_receiver_id;
 
       typedef multi_index_container<
       stx_object,
       indexed_by<
          ordered_unique< tag< by_id>,
             member< object, object_id_type, &object::id >
-      >,
-      ordered_non_unique< tag< by_sender>,
-      member<stx_object, account_id_type, &stx_object::sender>
-      >,
-      ordered_non_unique< tag< by_receiver>,
-      member<stx_object, account_id_type, &stx_object::receiver>
-      >,
-      ordered_unique< tag< by_transaction_id>,
-      member<stx_object, uint64_t, &stx_object::transaction_id>
-      >
+         >,
+         ordered_non_unique< tag< by_sender>,
+            member<stx_object, account_id_type, &stx_object::sender>
+         >,
+         ordered_non_unique< tag< by_receiver>,
+            member<stx_object, account_id_type, &stx_object::receiver>
+         >,
+         ordered_unique< tag< by_transaction_id>,
+            member<stx_object, uint64_t, &stx_object::transaction_id>
+         >,
+         ordered_unique< tag< by_sender_id>,
+            composite_key< stx_object,
+               member<stx_object, account_id_type, &stx_object::sender>,
+               member<object, object_id_type, &object::id>
+            >
+         >,
+         ordered_unique< tag< by_receiver_id>,
+            composite_key< stx_object,
+               member<stx_object, account_id_type, &stx_object::receiver>,
+               member<object, object_id_type, &object::id>
+            >
+         >
       >
       >stx_object_multi_index_type;
 

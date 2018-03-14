@@ -46,9 +46,11 @@ namespace graphene { namespace chain {
                               const std::vector<char>& data, std::string& text, uint64_t nonce);
    };
 
-   const vector<string> stx_recv_method_type = {"recv_invoices_by_sender",
-                                                "recv_invoices_by_receiver",
-                                                "recv_invoice_by_id"};
+   const vector<string> stx_recv_method_type = {"recv_data_by_sender",
+                                                "recv_data_by_receiver",
+                                                "recv_data_by_sender_reversed",
+                                                "recv_data_by_receiver_reversed",
+                                                "recv_data_by_id"};
 
    struct stx_payload {
       string MethodType;
